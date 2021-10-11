@@ -1,11 +1,20 @@
-function FilmCard(): JSX.Element {
+import {Film} from '../../types/film';
+
+type FilmCardProps = {
+  film: Film;
+};
+
+function FilmCard(props: FilmCardProps): JSX.Element {
+  const {film} = props;
+  const {posterImage, title} = film;
+
   return (
     <article className='small-film-card catalog__films-card'>
       <div className='small-film-card__image'>
-        <img src='img/fantastic-beasts-the-crimes-of-grindelwald.jpg' alt='Fantastic Beasts: The Crimes of Grindelwald' width='280' height='175' />
+        <img src={posterImage} alt='Fantastic Beasts: The Crimes of Grindelwald' width='280' height='175' />
       </div>
       <h3 className='small-film-card__title'>
-        <a className='small-film-card__link' href='film-page.html'>Fantastic Beasts: The Crimes of Grindelwald</a>
+        <a className='small-film-card__link' href='film-page.html'>{title}</a>
       </h3>
     </article>
   );

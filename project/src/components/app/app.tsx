@@ -8,14 +8,16 @@ import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
+import {Film} from '../../types/film';
 
 type AppScreenProps = {
   title: string;
   genre: string;
   releaseDate: number;
+  films: Film[];
 }
 
-function App({ title, genre, releaseDate }: AppScreenProps): JSX.Element {
+function App({title, genre, releaseDate, films}: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
