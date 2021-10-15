@@ -1,5 +1,6 @@
 import React from 'react';
-import FilmCard from '../film-card/film-card';
+import FilmsList from '../films-list/films-list';
+import {films} from '../../mocks/films';
 
 type MainProps = {
   title: string;
@@ -144,26 +145,8 @@ function Main({ title, genre, releaseDate }: MainProps): JSX.Element {
           </ul>
 
           <div className='catalog__films-list'>
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
-            <FilmCard />
+            {/* @ts-ignore */}
+            <FilmsList films={films} />
           </div>
 
           <div className='catalog__more'>
