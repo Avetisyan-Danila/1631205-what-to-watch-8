@@ -145,6 +145,7 @@ function Main({ title, genre, releaseDate }: MainProps): JSX.Element {
           </ul>
 
           <div className='catalog__films-list'>
+            {/* @ts-ignore */}
             <FilmsList films={films} />
           </div>
 

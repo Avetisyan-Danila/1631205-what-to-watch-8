@@ -35,17 +35,17 @@ function App({title, genre, releaseDate, films}: AppScreenProps): JSX.Element {
           exact
           path={AppRoute.MyList}
           render={() => <MyList />}
-          authorizationStatus={AuthorizationStatus.NoAuth}
+          authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Film}>
           <MoviePage />
         </Route>
         <Route exact path={AppRoute.AddReview}>
-          <AddReview />
+          <AddReview films={films} />
         </Route>
         <Route exact path={AppRoute.Player}>
-          <Player />
+          <Player films={films} />
         </Route>
         <Route>
           <NotFoundScreen />

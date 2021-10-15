@@ -1,9 +1,17 @@
+import {useState} from 'react';
 import FilmCard from '../film-card/film-card';
+import {Film} from '../../types/film';
 
-function FilmsList({films}: any[]): JSX.Element {
+type Props = {
+  films: Film[];
+}
+
+function FilmsList({films}: Props): JSX.Element[] {
+  const [activeCard, setActiveCard] = useState(false);
+
   return (
     films.map((film) => {
-      <FilmCard film={film} />;
+      return <FilmCard film={film} />;
     })
   );
 }
