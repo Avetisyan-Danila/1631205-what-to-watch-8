@@ -11,7 +11,7 @@ function FilmsList({films}: Props): JSX.Element[] {
 
   return (
     films.map((film) => {
-      return <FilmCard film={film} />;
+      return <FilmCard film={film} key={film.id}/>;
     })
   );
 }
