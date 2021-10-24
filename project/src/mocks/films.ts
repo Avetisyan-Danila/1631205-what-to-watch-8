@@ -4,7 +4,7 @@ export const films: Film[] = [
   {
     id: 1,
     posterImage: 'https://upload.wikimedia.org/wikipedia/ru/9/92/Eurotrip.jpg',
-    previewVideoLink: 'https://www.youtube.com/watch?v=SeoX8MZd81E',
+    previewVideoLink: '/Videos/video.mp4',
     runTime: 90,
     title: 'EuroTrip',
     genre: 'Comedy',
@@ -17,7 +17,7 @@ export const films: Film[] = [
   }, {
     id: 2,
     posterImage: 'https://upload.wikimedia.org/wikipedia/en/1/19/The_Broken_Circle_Breakdown.jpg',
-    previewVideoLink: 'https://www.youtube.com/watch?v=3a50DJkCxqw',
+    previewVideoLink: '/Videos/video.mp4',
     runTime: 111,
     title: 'The Broken Circle Breakdown',
     genre: 'Drama',
@@ -30,7 +30,7 @@ export const films: Film[] = [
   }, {
     id: 3,
     posterImage: 'https://upload.wikimedia.org/wikipedia/en/f/f5/The_Draughtsman%27s_Contract_theatrical_poster.png',
-    previewVideoLink: 'https://www.youtube.com/watch?v=92-LPtzRfTQ',
+    previewVideoLink: '/Videos/video.mp4',
     runTime: 107,
     title: 'The Draughtsman`s Contract',
     genre: 'Drama',
@@ -43,7 +43,7 @@ export const films: Film[] = [
   }, {
     id: 4,
     posterImage: 'https://upload.wikimedia.org/wikipedia/en/5/50/The_Breakfast_Club.jpg',
-    previewVideoLink: 'https://www.youtube.com/watch?v=BSXBvor47Zs',
+    previewVideoLink: '/Videos/video.mp4',
     runTime: 97,
     title: 'The Breakfast Club',
     genre: 'Drama',
@@ -56,7 +56,7 @@ export const films: Film[] = [
   }, {
     id: 5,
     posterImage: 'https://upload.wikimedia.org/wikipedia/en/2/2d/Pirates_of_the_caribbean_2_poster_b.jpg',
-    previewVideoLink: 'https://www.youtube.com/watch?v=6-NGPgX-uYA',
+    previewVideoLink: '/Videos/video.mp4',
     runTime: 151,
     title: 'Pirates of the Caribbean: Dead Man`s Chest',
     genre: 'fantasy',
@@ -69,7 +69,7 @@ export const films: Film[] = [
   }, {
     id: 6,
     posterImage: 'https://upload.wikimedia.org/wikipedia/en/d/d0/Lord_of_the_Rings_-_The_Two_Towers_%282002%29.jpg',
-    previewVideoLink: 'https://www.youtube.com/watch?v=hYcw5ksV8YQ',
+    previewVideoLink: '/Videos/video.mp4',
     runTime: 179,
     title: 'The Lord of the Rings: The Two Towers',
     genre: 'fantasy',
@@ -82,7 +82,7 @@ export const films: Film[] = [
   }, {
     id: 7,
     posterImage: 'https://upload.wikimedia.org/wikipedia/en/8/8f/The_Last_Picture_Show_%28movie_poster%29.jpg',
-    previewVideoLink: 'https://www.youtube.com/watch?v=5LoWGwN4ToE',
+    previewVideoLink: '/Videos/video.mp4',
     runTime: 118,
     title: 'The Last Picture Show',
     genre: 'Drama',
@@ -95,7 +95,7 @@ export const films: Film[] = [
   }, {
     id: 8,
     posterImage: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/45/Across_the_universe_sheet_music.jpg/240px-Across_the_universe_sheet_music.jpg',
-    previewVideoLink: 'https://www.youtube.com/watch?v=spf7RULGNOU',
+    previewVideoLink: '/Videos/video.mp4',
     runTime: 133,
     title: 'Across the Universe',
     genre: 'musical',
