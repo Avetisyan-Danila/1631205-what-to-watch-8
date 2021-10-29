@@ -1,14 +1,40 @@
 import React from 'react';
 import FilmsList from '../films-list/films-list';
+import GenreList from '../genre-list/genre-list';
 import {films} from '../../mocks/films';
+import {Dispatch} from 'redux';
+import {connect, ConnectedProps} from 'react-redux';
+import {changeGenre, GettingListFilms} from '../../store/action';
+import {State} from '../../types/state';
+import {Actions} from '../../types/action';
+import {Film} from '../../types/film';
+
+const mapStateToProps = ({films}: State) => ({
+  films,
+});
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  onGenreChange(genre: string) {
+    dispatch(changeGenre(genre));
+  },
+  onFilmsChange(films: Film[]) {
+    dispatch(GettingListFilms(films));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & MainProps;
 
 type MainProps = {
-  title: string;
-  genre: string;
-  releaseDate: number;
+  title: string,
+  genre: string,
+  releaseDate: number,
 }
 
-function Main({ title, genre, releaseDate }: MainProps): JSX.Element {
+function Main(props: ConnectedComponentProps): JSX.Element {
+  const {title, genre, releaseDate, films, onGenreChange, onFilmsChange} = props;
+
   return (
     <React.Fragment>
       <div className='visually-hidden'>
@@ -111,38 +137,7 @@ function Main({ title, genre, releaseDate }: MainProps): JSX.Element {
         <section className='catalog'>
           <h2 className='catalog__title visually-hidden'>Catalog</h2>
 
-          <ul className='catalog__genres-list'>
-            <li className='catalog__genres-item catalog__genres-item--active'>
-              <a href='#' className='catalog__genres-link'>All genres</a>
-            </li>
-            <li className='catalog__genres-item'>
-              <a href='#' className='catalog__genres-link'>Comedies</a>
-            </li>
-            <li className='catalog__genres-item'>
-              <a href='#' className='catalog__genres-link'>Crime</a>
-            </li>
-            <li className='catalog__genres-item'>
-              <a href='#' className='catalog__genres-link'>Documentary</a>
-            </li>
-            <li className='catalog__genres-item'>
-              <a href='#' className='catalog__genres-link'>Dramas</a>
-            </li>
-            <li className='catalog__genres-item'>
-              <a href='#' className='catalog__genres-link'>Horror</a>
-            </li>
-            <li className='catalog__genres-item'>
-              <a href='#' className='catalog__genres-link'>Kids & Family</a>
-            </li>
-            <li className='catalog__genres-item'>
-              <a href='#' className='catalog__genres-link'>Romance</a>
-            </li>
-            <li className='catalog__genres-item'>
-              <a href='#' className='catalog__genres-link'>Sci-Fi</a>
-            </li>
-            <li className='catalog__genres-item'>
-              <a href='#' className='catalog__genres-link'>Thrillers</a>
-            </li>
-          </ul>
+          <GenreList />
 
           <div className='catalog__films-list'>
             {/* @ts-ignore */}
@@ -172,4 +167,5 @@ function Main({ title, genre, releaseDate }: MainProps): JSX.Element {
   );
 }
 
-export default Main;
+export {Main};
+export default connector(Main);

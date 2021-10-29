@@ -1,7 +1,6 @@
 import {Film} from '../../types/film';
 import {Link, useHistory} from 'react-router-dom';
 import VideoPlayer from '../video-player/video-player';
-import {films} from '../../mocks/films';
 import {AppRoute} from '../../const';
 
 type FilmCardProps = {
