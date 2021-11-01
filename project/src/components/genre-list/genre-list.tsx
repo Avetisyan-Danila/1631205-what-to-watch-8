@@ -25,10 +25,10 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux;
 
 function GenreList(props: ConnectedComponentProps): JSX.Element {
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeGenre, setActiveGenre] = useState(0);
 
   function clickEventHandler(id: number) {
-    setActiveTab(id);
+    setActiveGenre(id);
   }
 
   const {films, onGenreChange, onFilmsChange} = props;
@@ -48,7 +48,10 @@ function GenreList(props: ConnectedComponentProps): JSX.Element {
         uniqueGenres.map((genre, index) => {
           const keyValue = `genre-${index}`;
           
-          return <li key={keyValue} className={`catalog__genres-item + ${activeTab === index ? 'catalog__genres-item--active' : ''}`}><a className='catalog__genres-link' onClick={() => {
+          return <li key={keyValue} className={`catalog__genres-item ${activeGenre === index ? 'catalog__genres-item--active' : ''}`}><a href='#' className='catalog__genres-link' onClick={
+            (e) => {
+              e.preventDefault();
+              
               clickEventHandler(index);
               
               if (genre === 'All genres') {

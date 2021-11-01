@@ -11,7 +11,7 @@ function FilmCard(props: FilmCardProps): JSX.Element {
   const history = useHistory();
   
   const {film} = props;
-  const {posterImage, title, previewVideoLink} = film;
+  const {id, posterImage, title, previewVideoLink} = film;
 
   return (
     <article className='small-film-card catalog__films-card'>
@@ -19,7 +19,9 @@ function FilmCard(props: FilmCardProps): JSX.Element {
         src={previewVideoLink}
         posterSrc={posterImage} />
       <h3 className='small-film-card__title'>
-        <Link className='small-film-card__link' onClick={() => history.push(AppRoute.Film)} to={title}>{title}</Link>
+        <Link className='small-film-card__link' onClick={() => 
+          history.push(AppRoute.Film)
+        } to={id}>{title}</Link>
       </h3>
     </article>
   );
