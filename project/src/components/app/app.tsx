@@ -1,6 +1,6 @@
 import {connect, ConnectedProps} from 'react-redux';
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute} from '../../const';
 import Main from '../main/main';
 import AddReview from '../add-review/add-review';
 import MoviePage from '../movie-page/movie-page';
@@ -56,7 +56,6 @@ function App(props: ConnectedComponentProps): JSX.Element {
           exact
           path={AppRoute.MyList}
           render={() => <MyList />}
-          authorizationStatus={AuthorizationStatus.Auth}
         >
         </PrivateRoute>
         <Route exact path={AppRoute.Film}>

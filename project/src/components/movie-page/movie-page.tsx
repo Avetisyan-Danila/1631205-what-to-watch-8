@@ -5,7 +5,7 @@ import MoreLikeThis from '../more-like-this/more-like-this'
 import {connect, ConnectedProps} from 'react-redux';
 import {State} from '../../types/state';
 
-const mapStateToProps = ({ films }: State) => ({
+const mapStateToProps = ({films}: State) => ({
   films,
 });
 

@@ -1,40 +1,26 @@
 import React from 'react';
 import FilmsList from '../films-list/films-list';
 import GenreList from '../genre-list/genre-list';
-import {films} from '../../mocks/films';
-import {Dispatch} from 'redux';
 import {connect, ConnectedProps} from 'react-redux';
-import {changeGenre, GettingListFilms} from '../../store/action';
 import {State} from '../../types/state';
-import {Actions} from '../../types/action';
-import {Film} from '../../types/film';
 
 const mapStateToProps = ({films}: State) => ({
   films,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onGenreChange(genre: string) {
-    dispatch(changeGenre(genre));
-  },
-  onFilmsChange(films: Film[]) {
-    dispatch(GettingListFilms(films));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & MainProps;
 
-type MainProps = {
+type MainProps =  {
   title: string,
   genre: string,
   releaseDate: number,
 }
 
 function Main(props: ConnectedComponentProps): JSX.Element {
-  const {title, genre, releaseDate, films, onGenreChange, onFilmsChange} = props;
+  const {title, genre, releaseDate} = props;
 
   return (
     <React.Fragment>
