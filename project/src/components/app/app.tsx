@@ -1,3 +1,4 @@
+import {connect, ConnectedProps} from 'react-redux';
 import {Switch, Route, BrowserRouter} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import Main from '../main/main';
@@ -8,16 +9,36 @@ import Player from '../player/player';
 import SignIn from '../sign-in/sign-in';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
-import {Film} from '../../types/film';
+import LoadingScreen from '../loading-screen/loading-screen';
+import {isCheckedAuth} from '../../film';
+import {State} from '../../types/state';
+
+const mapStateToProps = ({authorizationStatus, isDataLoaded, films}: State) => ({
+  authorizationStatus,
+  isDataLoaded,
+  films,
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFromRedux & AppScreenProps;
 
 type AppScreenProps = {
   title: string;
   genre: string;
   releaseDate: number;
-  films: Film[];
 }
 
-function App({title, genre, releaseDate, films}: AppScreenProps): JSX.Element {
+function App(props: ConnectedComponentProps): JSX.Element {
+  const {authorizationStatus, isDataLoaded, title, genre, releaseDate, films} = props;
+
+  if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Switch>
@@ -55,4 +76,5 @@ function App({title, genre, releaseDate, films}: AppScreenProps): JSX.Element {
   );
 }
 
-export default App;
+export {App};
+export default connector(App);

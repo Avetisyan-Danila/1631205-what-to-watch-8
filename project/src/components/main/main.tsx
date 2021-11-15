@@ -12,6 +12,7 @@ import {Film} from '../../types/film';
 const mapStateToProps = ({films}: State) => ({
   films,
 });
+
 const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
   onGenreChange(genre: string) {
     dispatch(changeGenre(genre));
@@ -140,8 +141,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
           <GenreList />
 
           <div className='catalog__films-list'>
-            {/* @ts-ignore */}
-            <FilmsList films={films} />
+            <FilmsList />
           </div>
 
           <div className='catalog__more'>

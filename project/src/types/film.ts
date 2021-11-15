@@ -7,7 +7,6 @@ export type Film = {
   genre: string;
   year: number;
   rating: number;
-  ratingDescription: string;
   scoresCount: number;
   description: string;
   director: string;
