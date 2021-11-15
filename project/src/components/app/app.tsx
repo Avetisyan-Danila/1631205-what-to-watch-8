@@ -1,5 +1,5 @@
 import {connect, ConnectedProps} from 'react-redux';
-import {Switch, Route, BrowserRouter} from 'react-router-dom';
+import {Switch, Route, Router as BrowserRouter} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import Main from '../main/main';
 import AddReview from '../add-review/add-review';
@@ -12,6 +12,7 @@ import PrivateRoute from '../private-route/private-route';
 import LoadingScreen from '../loading-screen/loading-screen';
 import {isCheckedAuth} from '../../film';
 import {State} from '../../types/state';
+import browserHistory from '../../browser-history';
 
 const mapStateToProps = ({authorizationStatus, isDataLoaded, films}: State) => ({
   authorizationStatus,
@@ -40,7 +41,7 @@ function App(props: ConnectedComponentProps): JSX.Element {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Root}>
           <Main

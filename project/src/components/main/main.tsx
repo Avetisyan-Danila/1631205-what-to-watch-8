@@ -2,13 +2,24 @@ import React from 'react';
 import FilmsList from '../films-list/films-list';
 import GenreList from '../genre-list/genre-list';
 import {connect, ConnectedProps} from 'react-redux';
+import {Link} from 'react-router-dom';
 import {State} from '../../types/state';
+import {ThunkAppDispatch} from '../../types/action';
+import {logoutAction} from '../../store/api-actions';
+import {AuthorizationStatus, AppRoute} from '../../const';
 
-const mapStateToProps = ({films}: State) => ({
+const mapStateToProps = ({films, authorizationStatus}: State) => ({
   films,
+  authorizationStatus,
 });
 
-const connector = connect(mapStateToProps);
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  logout() {
+    dispatch(logoutAction());
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFromRedux & MainProps;
@@ -20,7 +31,7 @@ type MainProps =  {
 }
 
 function Main(props: ConnectedComponentProps): JSX.Element {
-  const {title, genre, releaseDate} = props;
+  const {title, genre, releaseDate, authorizationStatus, logout} = props;
 
   return (
     <React.Fragment>
@@ -77,14 +88,21 @@ function Main(props: ConnectedComponentProps): JSX.Element {
           </div>
 
           <ul className='user-block'>
-            <li className='user-block__item'>
-              <div className='user-block__avatar'>
-                <img src='img/avatar.jpg' alt='User avatar' width='63' height='63' />
-              </div>
-            </li>
-            <li className='user-block__item'>
-              <a className='user-block__link'>Sign out</a>
-            </li>
+            {
+              authorizationStatus === AuthorizationStatus.Auth ?
+              <React.Fragment>
+                <li className='user-block__item'>
+                  <div className='user-block__avatar'>
+                    <img src='img/avatar.jpg' alt='User avatar' width='63' height='63' />
+                  </div>
+                </li>
+                <li className='user-block__item'>
+                  <a className='user-block__link' onClick={(e) => {e.preventDefault(); logout();}}>Sign out</a>
+                </li>
+              </React.Fragment>
+              :
+              <Link className="user-block__link" to={AppRoute.Login}>Sign in</Link>
+            }
           </ul>
         </header>
 

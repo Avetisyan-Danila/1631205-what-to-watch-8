@@ -29,9 +29,7 @@ function MoreLikeThis(props: MoreLikeThisProps): JSX.Element {
                       <img src={storageFilm.posterImage} alt={storageFilm.title} width="280" height="175" />
                     </div>
                     <h3 className='small-film-card__title'>
-                      <Link className='small-film-card__link' onClick={() =>
-                        history.push(AppRoute.Film)
-                      } to={storageFilm.id}>{storageFilm.title}</Link>
+                      <Link className='small-film-card__link' to={`${storageFilm.id}`}>{storageFilm.title}</Link>
                     </h3>
                   </article>
                 )

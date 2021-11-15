@@ -1,7 +1,7 @@
 import {ThunkActionResult} from '../types/action';
-import {loadFilms, requireAuthorization, requireLogout} from './action';
+import {loadFilms, requireAuthorization, requireLogout, redirectToRoute} from './action';
 import {saveToken, dropToken, Token} from '../services/token';
-import {APIRoute, AuthorizationStatus} from '../const';
+import {APIRoute, AuthorizationStatus, AppRoute} from '../const';
 import {Film} from '../types/film';
 import {AuthData} from '../types/auth-data';
 import {adapter} from '../film';
@@ -31,6 +31,7 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
     const {data: {token}} = await api.post<{token: Token}>(APIRoute.Login, {email, password});
     saveToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    dispatch(redirectToRoute(AppRoute.Root));
   };
 
 

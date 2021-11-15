@@ -10,6 +10,7 @@ export enum ActionType {
   LoadFilms = 'data/loadFilms',
   RequireAuthorization = 'user/RequireAuthorization',
   RequireLogout = 'user/RequireLogout',
+  RedirectToRoute = 'films/RedirectToRoute',
 }
 
 export type changeGenreAction = {
@@ -36,7 +37,12 @@ export type RequireLogoutAction = {
   type: ActionType.RequireLogout,
 };
 
-export type Actions = changeGenreAction | GettingListFilmsAction | LoadFilmsAction | RequireAuthorizationAction | RequireLogoutAction;
+export type RedirectToRouteAction = {
+  type: ActionType.RedirectToRoute,
+  payload: string,
+};
+
+export type Actions = changeGenreAction | GettingListFilmsAction | LoadFilmsAction | RequireAuthorizationAction | RequireLogoutAction| RedirectToRouteAction;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 
