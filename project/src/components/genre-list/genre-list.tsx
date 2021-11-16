@@ -5,7 +5,6 @@ import {changeGenre, GettingListFilms} from '../../store/action';
 import {State} from '../../types/state';
 import {Actions} from '../../types/action';
 import {Film} from '../../types/film';
-import {films as initialFilms} from '../../mocks/films';
 
 const mapStateToProps = ({films}: State) => ({
   films,
@@ -34,9 +33,9 @@ function GenreList(props: ConnectedComponentProps): JSX.Element {
   const {films, onGenreChange, onFilmsChange} = props;
 
   const AllGenres: string[] = ['All genres'];
-  let suitableFilms: Film[] = [];
+  const suitableFilms: Film[] = [];
 
-  initialFilms.map((film) => {
+  films.map((film) => {
     AllGenres.push(film.genre);
   })
 
@@ -56,11 +55,11 @@ function GenreList(props: ConnectedComponentProps): JSX.Element {
               
               if (genre === 'All genres') {
                 onGenreChange('All genres');
-                onFilmsChange(initialFilms);
+                onFilmsChange(films);
                 return;
               }
 
-              initialFilms.forEach((film) => {
+              films.forEach((film) => {
                 if (film.genre === genre) {
                   suitableFilms.push(film);
                 }

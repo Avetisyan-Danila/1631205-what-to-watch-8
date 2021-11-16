@@ -1,38 +1,30 @@
 import FilmCard from '../film-card/film-card';
-import {useState} from 'react';
-import {Dispatch} from 'redux';
+import {useState, Fragment} from 'react';
 import {connect, ConnectedProps} from 'react-redux';
-import {changeGenre, GettingListFilms} from '../../store/action';
 import {State} from '../../types/state';
-import {Actions} from '../../types/action';
-import {Film} from '../../types/film';
 
-const mapStateToProps = ({films}: State) => ({
-  films,
-});
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onGenreChange(genre: string) {
-    dispatch(changeGenre(genre));
-  },
-  onFilmsChange(films: Film[]) {
-    dispatch(GettingListFilms(films));
-  },
+const mapStateToProps = ({suitableFilms}: State) => ({
+  suitableFilms,
 });
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux;
 
-function FilmsList(props: ConnectedComponentProps): JSX.Element[] {
+function FilmsList(props: PropsFromRedux): JSX.Element {
   const [activeCard, setActiveCard] = useState(false);
-  const {films, onGenreChange, onFilmsChange} = props;
-
+  const {suitableFilms} = props;
+  
   return (
-    films.map((film) => {
-      return <FilmCard film={film} key={film.id}/>;
-    })
+    <Fragment>
+      {
+        suitableFilms.map((film) => {
+          return <FilmCard film={film} key={film.id} />;
+        })
+      }
+    </Fragment>
   );
 }
 
-export default FilmsList;
+export {FilmsList};
+export default connector(FilmsList);
