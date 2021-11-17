@@ -1,4 +1,4 @@
-import {Fragment, useState} from 'react';
+import {useState} from 'react';
 import TabsOverview from '../tabs-overview/tabs-overview';
 import TabsDetails from '../tabs-details/tabs-details';
 import TabsReviews from '../tabs-reviews/tabs-reviews';
