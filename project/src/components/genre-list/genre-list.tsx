@@ -1,36 +1,18 @@
-import {useState} from 'react';
-import {Dispatch} from 'redux';
-import {connect, ConnectedProps} from 'react-redux';
-import {changeGenre, GettingListFilms} from '../../store/action';
-import {State} from '../../types/state';
-import {Actions} from '../../types/action';
+import {useState, memo} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {changeGenre, gettingListFilms} from '../../store/action';
 import {Film} from '../../types/film';
+import {getFilms} from '../../store/films-data/selectors';
 
-const mapStateToProps = ({films}: State) => ({
-  films,
-});
-const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onGenreChange(genre: string) {
-    dispatch(changeGenre(genre));
-  },
-  onFilmsChange(films: Film[]) {
-    dispatch(GettingListFilms(films));
-  },
-});
+function GenreList(): JSX.Element {
+  const films = useSelector(getFilms);
+  const dispatch = useDispatch();
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux;
-
-function GenreList(props: ConnectedComponentProps): JSX.Element {
   const [activeGenre, setActiveGenre] = useState(0);
 
   function clickEventHandler(id: number) {
     setActiveGenre(id);
   }
-
-  const {films, onGenreChange, onFilmsChange} = props;
 
   const AllGenres: string[] = ['All genres'];
   const suitableFilms: Film[] = [];
@@ -54,8 +36,8 @@ function GenreList(props: ConnectedComponentProps): JSX.Element {
               clickEventHandler(index);
               
               if (genre === 'All genres') {
-                onGenreChange('All genres');
-                onFilmsChange(films);
+                dispatch(changeGenre('All genres'));
+                dispatch(gettingListFilms(films));
                 return;
               }
 
@@ -65,8 +47,8 @@ function GenreList(props: ConnectedComponentProps): JSX.Element {
                 }
               });
 
-              onGenreChange(genre);
-              onFilmsChange(suitableFilms);
+              dispatch(changeGenre(genre));
+              dispatch(gettingListFilms(suitableFilms));
             }
           }>{genre}</a></li>
         })
@@ -75,5 +57,4 @@ function GenreList(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export {GenreList};
-export default connector(GenreList);
+export default memo(GenreList);

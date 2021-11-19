@@ -1,28 +1,11 @@
 import React from 'react';
 import FilmsList from '../films-list/films-list';
 import GenreList from '../genre-list/genre-list';
-import {connect, ConnectedProps} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {State} from '../../types/state';
-import {ThunkAppDispatch} from '../../types/action';
 import {logoutAction} from '../../store/api-actions';
 import {AuthorizationStatus, AppRoute} from '../../const';
-
-const mapStateToProps = ({films, authorizationStatus}: State) => ({
-  films,
-  authorizationStatus,
-});
-
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  logout() {
-    dispatch(logoutAction());
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFromRedux & MainProps;
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
 type MainProps =  {
   title: string,
@@ -30,8 +13,11 @@ type MainProps =  {
   releaseDate: number,
 }
 
-function Main(props: ConnectedComponentProps): JSX.Element {
-  const {title, genre, releaseDate, authorizationStatus, logout} = props;
+function Main(props: MainProps): JSX.Element {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const dispatch = useDispatch();
+
+  const {title, genre, releaseDate} = props;
 
   return (
     <React.Fragment>
@@ -97,7 +83,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
                   </div>
                 </li>
                 <li className='user-block__item'>
-                  <a className='user-block__link' onClick={(e) => {e.preventDefault(); logout();}}>Sign out</a>
+                  <a className='user-block__link' onClick={(e) => {e.preventDefault(); dispatch(logoutAction());}}>Sign out</a>
                 </li>
               </React.Fragment>
               :
@@ -171,5 +157,4 @@ function Main(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export {Main};
-export default connector(Main);
+export default Main;

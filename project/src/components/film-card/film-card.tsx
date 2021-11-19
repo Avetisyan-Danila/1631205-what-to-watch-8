@@ -1,3 +1,4 @@
+import {memo} from 'react';
 import {Film} from '../../types/film';
 import {Link} from 'react-router-dom';
 import VideoPlayer from '../video-player/video-player';
@@ -22,4 +23,4 @@ function FilmCard(props: FilmCardProps): JSX.Element {
   );
 }
 
-export default FilmCard;
+export default memo(FilmCard);
