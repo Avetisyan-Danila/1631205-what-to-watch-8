@@ -2,24 +2,16 @@ import {Fragment} from 'react';
 import {useParams} from 'react-router';
 import Tabs from '../tabs/tabs'
 import MoreLikeThis from '../more-like-this/more-like-this'
-import {connect, ConnectedProps} from 'react-redux';
-import {State} from '../../types/state';
-
-const mapStateToProps = ({films}: State) => ({
-  films,
-});
-
-const connector = connect(mapStateToProps, []);
-type PropsFromRedux = ConnectedProps<typeof connector>;
+import {useSelector} from 'react-redux';
+import {getFilms} from '../../store/films-data/selectors';
 
 type RouteParams = {
-    id: string;
+  id: string;
 }
 
-function MoviePage(props: PropsFromRedux): JSX.Element {
+function MoviePage(): JSX.Element {
+  const films = useSelector(getFilms);
   const {id} = useParams<RouteParams>();
-
-  const {films} = props;
 
   const film = films[Number(id) - 1];
 
@@ -90,6 +82,4 @@ function MoviePage(props: PropsFromRedux): JSX.Element {
     </Fragment>
   );
 }
-
-export {MoviePage};
-export default connector(MoviePage);
+export default MoviePage;
