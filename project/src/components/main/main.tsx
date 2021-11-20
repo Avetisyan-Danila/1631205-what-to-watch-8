@@ -1,11 +1,16 @@
 import React from 'react';
+import {useState} from 'react';
 import FilmsList from '../films-list/films-list';
 import GenreList from '../genre-list/genre-list';
+import ShowMore from '../show-more/show-more';
 import {useSelector, useDispatch} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {logoutAction} from '../../store/api-actions';
 import {AuthorizationStatus, AppRoute} from '../../const';
 import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import {FILMS_COUNT_PER_STEP} from '../../const';
+import {getFilms} from '../../store/films-data/selectors';
+import {getSuitableFilms} from '../../store/films-process/selectors';
 
 type MainProps =  {
   title: string,
@@ -14,6 +19,9 @@ type MainProps =  {
 }
 
 function Main(props: MainProps): JSX.Element {
+  const [renderedFilmsCount, setRenderedFilmsCount] = useState(FILMS_COUNT_PER_STEP);
+  const suitableFilms = useSelector(getSuitableFilms);
+
   const authorizationStatus = useSelector(getAuthorizationStatus);
   const dispatch = useDispatch();
 
@@ -128,15 +136,21 @@ function Main(props: MainProps): JSX.Element {
         <section className='catalog'>
           <h2 className='catalog__title visually-hidden'>Catalog</h2>
 
-          <GenreList />
+          <GenreList onGenreChange={() => setRenderedFilmsCount(FILMS_COUNT_PER_STEP)} />
 
           <div className='catalog__films-list'>
-            <FilmsList />
+            <FilmsList renderedFilmsCount={renderedFilmsCount} />
           </div>
 
-          <div className='catalog__more'>
-            <button className='catalog__button' type='button'>Show more</button>
-          </div>
+          {
+            renderedFilmsCount > suitableFilms.length ?
+            ''
+            :
+            suitableFilms.length > FILMS_COUNT_PER_STEP ?
+              <ShowMore onShowMoreButtonClick={() => setRenderedFilmsCount((prevCount) => prevCount + FILMS_COUNT_PER_STEP)} />
+              :
+              ''
+          }
         </section>
 
         <footer className='page-footer'>

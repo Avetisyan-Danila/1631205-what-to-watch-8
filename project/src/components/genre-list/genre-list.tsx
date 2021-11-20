@@ -1,11 +1,18 @@
-import {useState, memo} from 'react';
+import {useState, memo, MouseEventHandler} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {changeGenre, gettingListFilms} from '../../store/action';
 import {Film} from '../../types/film';
 import {getFilms} from '../../store/films-data/selectors';
+import {getGenre} from '../../store/films-process/selectors';
 
-function GenreList(): JSX.Element {
+type GenreListProps = {
+  onGenreChange: MouseEventHandler<HTMLElement>;
+};
+
+function GenreList(props: GenreListProps): JSX.Element {
+  const {onGenreChange} = props;
   const films = useSelector(getFilms);
+  const storeGenre = useSelector(getGenre);
   const dispatch = useDispatch();
 
   const [activeGenre, setActiveGenre] = useState(0);
@@ -23,16 +30,20 @@ function GenreList(): JSX.Element {
 
   let uniqueGenres = Array.from(new Set(AllGenres));
 
+  if (storeGenre === 'All genres') {
+    dispatch(gettingListFilms(films));
+  }
+
   return (
     <ul className='catalog__genres-list'>
       {
         uniqueGenres.map((genre, index) => {
           const keyValue = `genre-${index}`;
-          
-          return <li key={keyValue} className={`catalog__genres-item ${activeGenre === index ? 'catalog__genres-item--active' : ''}`}><a href='#' className='catalog__genres-link' onClick={
+
+          return <li onClick={onGenreChange} key={keyValue} className={`catalog__genres-item ${activeGenre === index ? 'catalog__genres-item--active' : ''}`}><a href='#' className='catalog__genres-link' onClick={
             (e) => {
               e.preventDefault();
-              
+
               clickEventHandler(index);
               
               if (genre === 'All genres') {
