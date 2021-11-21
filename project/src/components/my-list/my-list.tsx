@@ -1,5 +1,4 @@
-import FilmsList from '../films-list/films-list';
-import {films} from '../../mocks/films';
+import FavoriteFilmsList from '../favorite-films-list/favorite-films-list';
 
 function MyList(): JSX.Element {
   return (
@@ -31,8 +30,7 @@ function MyList(): JSX.Element {
         <h2 className='catalog__title visually-hidden'>Catalog</h2>
 
         <div className='catalog__films-list'>
-          {/* @ts-ignore */}
-          <FilmsList films={films} />
+          <FavoriteFilmsList />
         </div>
       </section>
 

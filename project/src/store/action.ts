@@ -30,6 +30,15 @@ export const loadFilms = createAction(
   }),
 );
 
+export const loadFavoriteFilms = createAction(
+  ActionType.LoadFavoriteFilms,
+  (films: Film[]) => ({
+    payload: {
+      films,
+    },
+  }),
+);
+
 export const requireAuthorization = createAction(
   ActionType.RequireAuthorization,
   (authStatus: AuthorizationStatus) => ({

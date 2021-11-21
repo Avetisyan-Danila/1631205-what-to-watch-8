@@ -4,6 +4,7 @@ import {AuthorizationStatus} from '../const';
 
 export type FilmsData = {
   films: Film[],
+  favoriteFilms: Film[],
   isDataLoaded: boolean,
 };
 

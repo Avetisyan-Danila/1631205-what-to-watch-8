@@ -17,6 +17,7 @@ export enum APIRoute {
   Films = '/films',
   Login = '/login',
   Logout = '/logout',
+  FavoriteFilm = '/favorite',
 }
 
 export const FILMS_COUNT_PER_STEP = 8;

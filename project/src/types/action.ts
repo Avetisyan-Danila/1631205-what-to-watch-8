@@ -7,6 +7,7 @@ export enum ActionType {
   ChangeGenre = 'films/changeGenreAction',
   GettingListFilms = 'films/gettingListFilms',
   LoadFilms = 'data/loadFilms',
+  LoadFavoriteFilms = 'data/loadFavoriteFilms',
   RequireAuthorization = 'user/RequireAuthorization',
   RequireLogout = 'user/RequireLogout',
   RedirectToRoute = 'films/RedirectToRoute',

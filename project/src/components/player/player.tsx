@@ -1,43 +1,91 @@
+import {useState, useEffect, useRef} from 'react';
+import {useParams, useHistory} from 'react-router';
+import {Link} from 'react-router-dom';
 import {Film} from '../../types/film';
+import {AppRoute} from '../../const';
 
-type Props = {
+type PlayerProps = {
   films: Film[];
 }
 
-function Player({films}: Props): JSX.Element {
+type RouteParams = {
+  id: string;
+}
+
+function Player(props: PlayerProps): JSX.Element {
+  const {films} = props;
+  const {id} = useParams<RouteParams>();
+  const history = useHistory();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progressTime, setprogressTime] = useState(0);
+
+  const film = films[Number(id) - 1];
+
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const video = videoRef.current;
+
+  function getTimeFromMins(seconds: number) {
+    var d = Math.floor(seconds / (3600 * 24));
+    var h = Math.floor(seconds % (3600 * 24) / 3600);
+    var m = Math.floor(seconds % 3600 / 60);
+    var s = Math.floor(seconds % 3600 % 60);
+
+    return `${h>10?h:'0'+h}:${m>10?m:'0'+m}:${s}`;
+  };
+
+  useEffect(() => {
+    if (video === null) {
+      return;
+    }
+
+    if (isPlaying) {
+      video.play();
+      return;
+    }
+
+    if (!isPlaying) {
+      video.pause();
+      return;
+    }
+  }, [isPlaying]);
+
   return (
-    <div className='player'>
-      <video src='#' className='player__video' poster={films[0].posterImage}></video>
+    <div className="player">
+      <video className="player__video" poster={film.backgroundImage} ref={videoRef} onEnded={() => {video === null ? '' : video.currentTime = 0; setIsPlaying(false)}} onTimeUpdate={() => setprogressTime(video === null ? 0 : (Math.round(video.currentTime) * 100) / Math.round(video.duration))}><source src={film.videoLink} type="video/mp4" /></video>
 
-      <button type='button' className='player__exit'>Exit</button>
+      <Link onClick={() => history.push(AppRoute.Film)} to={id}><button type="button" className="player__exit">Exit</button></Link>
 
-      <div className='player__controls'>
-        <div className='player__controls-row'>
-          <div className='player__time'>
-            <progress className='player__progress' value='30' max='100'></progress>
-            <div className='player__toggler'
-              style={{
-                left: '30%',
-              }}
-            >
-              Toggler
-            </div>
+      <div className="player__controls">
+        <div className="player__controls-row">
+          <div className="player__time">
+            <progress className="player__progress" value={progressTime} max="100"></progress>
+            <div className="player__toggler" style={{left: `${progressTime}%`}}>Toggler</div>
           </div>
-          <div className='player__time-value'>1:30:29</div>
+          <div className="player__time-value">{video === null ? '' : getTimeFromMins(video.duration)}</div>
         </div>
 
-        <div className='player__controls-row'>
-          <button type='button' className='player__play'>
-            <svg viewBox='0 0 19 19' width='19' height='19'>
-              <use xlinkHref='#play-s'></use>
+        <div className="player__controls-row">
+          {
+            isPlaying === false ?
+            <button type="button" className="player__play" onClick={() => setIsPlaying(true)}>
+              <svg viewBox="0 0 19 19" width="19" height="19">
+                <use xlinkHref="#play-s"></use>
+              </svg>
+              <span>Play</span>
+            </button>
+            :
+            <button type="button" className="player__play" onClick={() => setIsPlaying(false)}>
+            <svg viewBox="0 0 14 21" width="14" height="21">
+              <use xlinkHref="#pause"></use>
             </svg>
-            <span>Play</span>
+            <span>Pause</span>
           </button>
-          <div className='player__name'>Transpotting</div>
+          }
+          <div className="player__name">Transpotting</div>
 
-          <button type='button' className='player__full-screen'>
-            <svg viewBox='0 0 27 27' width='27' height='27'>
-              <use xlinkHref='#full-screen'></use>
+          <button type="button" className="player__full-screen" onClick={() => video?.requestFullscreen()}>
+            <svg viewBox="0 0 27 27" width="27" height="27">
+              <use xlinkHref="#full-screen"></use>
             </svg>
             <span>Full screen</span>
           </button>

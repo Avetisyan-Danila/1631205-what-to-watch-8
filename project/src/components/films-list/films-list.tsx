@@ -1,7 +1,6 @@
 import FilmCard from '../film-card/film-card';
 import {Fragment, memo} from 'react';
 import {useSelector} from 'react-redux';
-import {getFilms} from '../../store/films-data/selectors';
 import {getSuitableFilms} from '../../store/films-process/selectors';
 
 type FilmsListProps = {
@@ -10,8 +9,6 @@ type FilmsListProps = {
 
 function FilmsList(props: FilmsListProps): JSX.Element {
   const {renderedFilmsCount} = props;
-
-  const films = useSelector(getFilms);
   const suitableFilms = useSelector(getSuitableFilms);
 
   return (
