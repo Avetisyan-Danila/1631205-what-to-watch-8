@@ -1,4 +1,4 @@
-import {Fragment, useState, useEffect, useRef, createRef} from 'react';
+import {useState, useEffect, useRef} from 'react';
 
 type AudioPlayerProps = {
   src: string;
@@ -46,7 +46,7 @@ function VideoPlayer({src, posterSrc}: AudioPlayerProps): JSX.Element {
 
   return (
     <div className='small-film-card__image' ref={parentRef}>
-      <video poster={posterSrc} width="100%" height="100%" ref={videoRef} loop muted>
+      <video poster={posterSrc} width="280" height="175" ref={videoRef} loop muted>
         <source src={src} type="video/mp4" />
       </video>
     </div>

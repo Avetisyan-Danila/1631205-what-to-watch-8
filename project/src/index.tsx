@@ -28,20 +28,10 @@ const store = configureStore({
 store.dispatch(checkAuthAction());
 store.dispatch(fetchFilmAction());
 
-const FilmData = {
-  title: 'The Grand Budapest Hotel',
-  genre: 'Drama',
-  releaseDate: 2014,
-};
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store = {store}>
-      <App
-        title = {FilmData.title}
-        genre = {FilmData.genre}
-        releaseDate = {FilmData.releaseDate}
-      />
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'));

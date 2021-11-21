@@ -1,5 +1,5 @@
 import {ThunkActionResult} from '../types/action';
-import {loadFilms, requireAuthorization, requireLogout, redirectToRoute} from './action';
+import {loadFilms, requireAuthorization, requireLogout, redirectToRoute, loadFavoriteFilms} from './action';
 import {saveToken, dropToken, Token} from '../services/token';
 import {APIRoute, AuthorizationStatus, AppRoute} from '../const';
 import {Film} from '../types/film';
@@ -34,6 +34,27 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
     dispatch(redirectToRoute(AppRoute.Root));
   };
 
+export const addFavoriteFilmAction = (id: string): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    await api.post(`${APIRoute.FavoriteFilm}/${id}/1`);
+  };
+
+export const removeFavoriteFilmAction = (id: string): ThunkActionResult =>
+  async (dispatch, _getState, api) => {
+    await api.post(`${APIRoute.FavoriteFilm}/${id}/0`);
+  };
+
+export const fetchFavoriteFilmAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<Film[]>(APIRoute.FavoriteFilm);
+    const dataUIFormat: Film[] = [];
+
+    data.map((film) => {
+      dataUIFormat.push(adapter(film));
+    });
+
+    dispatch(loadFavoriteFilms(dataUIFormat));
+  };
 
 export const logoutAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {

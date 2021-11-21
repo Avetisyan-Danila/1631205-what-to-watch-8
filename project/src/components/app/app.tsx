@@ -16,18 +16,10 @@ import {getFilms} from '../../store/films-data/selectors';
 import {getLoadedDataStatus} from '../../store/films-data/selectors';
 import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
-type AppScreenProps = {
-  title: string;
-  genre: string;
-  releaseDate: number;
-}
-
-function App(props: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
   const authorizationStatus = useSelector(getAuthorizationStatus)
   const isDataLoaded = useSelector(getLoadedDataStatus)
   const films = useSelector(getFilms)
-
-  const {title, genre, releaseDate} = props;
 
   if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return (
@@ -39,11 +31,7 @@ function App(props: AppScreenProps): JSX.Element {
     <BrowserRouter history={browserHistory}>
       <Switch>
         <Route exact path={AppRoute.Root}>
-          <Main
-            title={title}
-            genre={genre}
-            releaseDate={releaseDate}
-          />
+          <Main />
         </Route>
         <Route exact path={AppRoute.Login}>
           <SignIn />
