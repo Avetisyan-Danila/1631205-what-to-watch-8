@@ -18,13 +18,14 @@ function Player(props: PlayerProps): JSX.Element {
   const history = useHistory();
   const [isPlaying, setIsPlaying] = useState(false);
   const [progressTime, setprogressTime] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(0);
 
   const film = films[Number(id) - 1];
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const video = videoRef.current;
 
-  function getTimeFromMins(seconds: number) {
+  function getTimeFromSeconds(seconds: number) {
     var d = Math.floor(seconds / (3600 * 24));
     var h = Math.floor(seconds % (3600 * 24) / 3600);
     var m = Math.floor(seconds % 3600 / 60);
@@ -51,7 +52,7 @@ function Player(props: PlayerProps): JSX.Element {
 
   return (
     <div className="player">
-      <video className="player__video" poster={film.backgroundImage} ref={videoRef} onEnded={() => {video === null ? '' : video.currentTime = 0; setIsPlaying(false)}} onTimeUpdate={() => setprogressTime(video === null ? 0 : (Math.round(video.currentTime) * 100) / Math.round(video.duration))}><source src={film.videoLink} type="video/mp4" /></video>
+      <video className="player__video" poster={film.backgroundImage} ref={videoRef} onEnded={() => {video === null ? '' : video.currentTime = 0; setIsPlaying(false)}} onTimeUpdate={() => { setprogressTime(video === null ? 0 : (Math.round(video.currentTime) * 100) / Math.round(video.duration)); setTimeLeft(video === null ? 0 : Math.round(video.duration) - (Math.round(video.currentTime)))}}><source src={film.videoLink} type="video/mp4" /></video>
 
       <Link onClick={() => history.push(AppRoute.Film)} to={id}><button type="button" className="player__exit">Exit</button></Link>
 
@@ -61,7 +62,7 @@ function Player(props: PlayerProps): JSX.Element {
             <progress className="player__progress" value={progressTime} max="100"></progress>
             <div className="player__toggler" style={{left: `${progressTime}%`}}>Toggler</div>
           </div>
-          <div className="player__time-value">{video === null ? '' : getTimeFromMins(video.duration)}</div>
+          <div className="player__time-value">{video === null ? '' : getTimeFromSeconds(timeLeft)}</div>
         </div>
 
         <div className="player__controls-row">

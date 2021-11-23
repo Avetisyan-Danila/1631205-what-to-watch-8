@@ -1,35 +1,55 @@
-import {Link, useHistory} from 'react-router-dom';
-import {AppRoute} from '../../const';
+import {Link} from 'react-router-dom';
 import {Film} from '../../types/film';
+import {useState, useEffect} from 'react';
+import {APIRoute} from '../../const';
+import {api} from '../../index';
+import {adapter} from '../../film';
+import LoadingScreen from '../loading-screen/loading-screen';
+import Footer from '../footer/footer';
+import VideoPlayer from '../video-player/video-player';
+import {useDispatch} from 'react-redux';
+import {fetchCertainFilmAction} from '../../store/api-actions';
 
 type MoreLikeThisProps = {
-  films: Film[];
   film: Film;
 };
 
 function MoreLikeThis(props: MoreLikeThisProps): JSX.Element {
-  const history = useHistory();
+  const {film} = props;
+  const [similarFilms, setSimilarFilms] = useState<Film[] | null>(null);
+  const dispatch = useDispatch();
 
-  const {films, film} = props;
+  useEffect(() => {
+    api.get(`${APIRoute.Films}/${film.id}/similar`)
+    .then(({data}) => {
+      const dataUIFormat: Film[] = [];
 
-  return (
+      data.map((film: Film) => {
+        dataUIFormat.push(adapter(film));
+      });
+
+      setSimilarFilms(dataUIFormat);
+    })
+  }, []);
+
+  return !!similarFilms ? (
     <div className="page-content">
       <section className="catalog catalog--like-this">
         <h2 className="catalog__title">More like this</h2>
 
         <div className="catalog__films-list">
           {
-            films.map((storageFilm, index) => {
+            similarFilms.map((similarFilm, index) => {
               const keyValue = `film-${index}`;
 
-              if (storageFilm.genre === film.genre && storageFilm.id !== film.id) {
+              if (similarFilm.genre === film.genre && similarFilm.id !== film.id) {
                 return (
-                  <article className="small-film-card catalog__films-card" key={keyValue}>
-                    <div className="small-film-card__image">
-                      <img src={storageFilm.posterImage} alt={storageFilm.title} width="280" height="175" />
-                    </div>
+                  <article className='small-film-card catalog__films-card'>
+                    <Link onClick={() => dispatch(fetchCertainFilmAction(similarFilm.id))} className='small-film-card__link' to={`films/${similarFilm.id}`}>
+                      <VideoPlayer src={similarFilm.previewVideoLink} posterSrc={similarFilm.posterImage} />
+                    </Link>
                     <h3 className='small-film-card__title'>
-                      <Link className='small-film-card__link' to={`${storageFilm.id}`}>{storageFilm.title}</Link>
+                      <Link onClick={() => dispatch(fetchCertainFilmAction(similarFilm.id))} className='small-film-card__link' to={`films/${similarFilm.id}`}>{similarFilm.title}</Link>
                     </h3>
                   </article>
                 )
@@ -39,21 +59,13 @@ function MoreLikeThis(props: MoreLikeThisProps): JSX.Element {
         </div>
       </section>
 
-      <footer className="page-footer">
-        <div className="logo">
-          <a href="main.html" className="logo__link logo__link--light">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </a>
-        </div>
-
-        <div className="copyright">
-          <p>© 2019 What to watch Ltd.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
-  );
+  )
+  :
+  (
+    <LoadingScreen />
+  )
 }
 
 export default MoreLikeThis;
