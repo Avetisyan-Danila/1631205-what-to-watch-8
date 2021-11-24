@@ -39,35 +39,40 @@ function Tabs(props: TabsProps): JSX.Element {
               tabs.map((tab, index) => {
                 const keyValue = `tab-${index}`;
 
-                return <li key={keyValue} className={`film-nav__item + ${activeTabIndex === index ? 'film-nav__item--active' : ''}`}><a href='#' className='film-nav__link' onClick={
-                    (e) => {
-                      e.preventDefault();
-                      clickEventHandler(index);
-                      setActiveTab(tab)
+                return (
+                  <li key={keyValue} className={`film-nav__item + ${activeTabIndex === index ? 'film-nav__item--active' : ''}`}>
+                    <a href='#' className='film-nav__link' onClick={
+                      (e) => {
+                        e.preventDefault();
+                        clickEventHandler(index);
+                        setActiveTab(tab);
+                      }
                     }
-                  }>{tab}</a>
-                </li>
+                    >{tab}
+                    </a>
+                  </li>
+                );
               })
             }
           </ul>
         </nav>
         {
           activeTab === 'Overview' ?
-          <TabsOverview film={film} />
-          :
-          ''
+            <TabsOverview film={film} />
+            :
+            ''
         }
         {
           activeTab === 'Details' ?
-          (<TabsDetails film={film} />)
-          :
-          ''
+            (<TabsDetails film={film} />)
+            :
+            ''
         }
         {
           activeTab === 'Reviews' ?
-          (<TabsReviews comments={comments} />)
-          :
-          ''
+            (<TabsReviews comments={comments} />)
+            :
+            ''
         }
       </div>
     </div>

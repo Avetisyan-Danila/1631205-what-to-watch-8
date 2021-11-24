@@ -1,6 +1,6 @@
 import FavoriteFilmsList from '../favorite-films-list/favorite-films-list';
-import Header from '../header/header'
-import Footer from '../footer/footer'
+import Header from '../header/header';
+import Footer from '../footer/footer';
 
 function MyList(): JSX.Element {
   return (

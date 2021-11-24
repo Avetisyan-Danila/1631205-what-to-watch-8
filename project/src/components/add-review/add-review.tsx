@@ -13,7 +13,7 @@ function AddReview(): JSX.Element {
   const {id} = useParams<RouteParams>();
 
   const film = films[Number(id) - 1];
-  
+
   return (
     <section className='film-card film-card--full' style={{background: `${film.backgroundColor}`}}>
       <div className='film-card__header'>

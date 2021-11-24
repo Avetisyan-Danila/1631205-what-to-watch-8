@@ -26,13 +26,12 @@ function Player(props: PlayerProps): JSX.Element {
   const video = videoRef.current;
 
   function getTimeFromSeconds(seconds: number) {
-    var d = Math.floor(seconds / (3600 * 24));
-    var h = Math.floor(seconds % (3600 * 24) / 3600);
-    var m = Math.floor(seconds % 3600 / 60);
-    var s = Math.floor(seconds % 3600 % 60);
+    const h = Math.floor(seconds % (3600 * 24) / 3600);
+    const m = Math.floor(seconds % 3600 / 60);
+    const s = Math.floor(seconds % 3600 % 60);
 
-    return `${h>10?h:'0'+h}:${m>10?m:'0'+m}:${s}`;
-  };
+    return `${h>10?h:`0${h}`}:${m>10?m:`0${m}`}:${s}`;
+  }
 
   useEffect(() => {
     if (video === null) {
@@ -46,13 +45,21 @@ function Player(props: PlayerProps): JSX.Element {
 
     if (!isPlaying) {
       video.pause();
-      return;
     }
   }, [isPlaying]);
 
+  const handeOnEnded = () => {
+    if (video) {
+      video.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
+
+  const handeOnTimeUpdate = () => { setprogressTime(video === null ? 0 : (Math.round(video.currentTime) * 100) / Math.round(video.duration)); setTimeLeft(video === null ? 0 : Math.round(video.duration) - (Math.round(video.currentTime)));};
+
   return (
     <div className="player">
-      <video className="player__video" poster={film.backgroundImage} ref={videoRef} onEnded={() => {video === null ? '' : video.currentTime = 0; setIsPlaying(false)}} onTimeUpdate={() => { setprogressTime(video === null ? 0 : (Math.round(video.currentTime) * 100) / Math.round(video.duration)); setTimeLeft(video === null ? 0 : Math.round(video.duration) - (Math.round(video.currentTime)))}}><source src={film.videoLink} type="video/mp4" /></video>
+      <video className="player__video" poster={film.backgroundImage} ref={videoRef} onEnded={handeOnEnded} onTimeUpdate={handeOnTimeUpdate}><source src={film.videoLink} type="video/mp4" /></video>
 
       <Link onClick={() => history.push(AppRoute.Film)} to={id}><button type="button" className="player__exit">Exit</button></Link>
 
@@ -68,19 +75,19 @@ function Player(props: PlayerProps): JSX.Element {
         <div className="player__controls-row">
           {
             isPlaying === false ?
-            <button type="button" className="player__play" onClick={() => setIsPlaying(true)}>
-              <svg viewBox="0 0 19 19" width="19" height="19">
-                <use xlinkHref="#play-s"></use>
-              </svg>
-              <span>Play</span>
-            </button>
-            :
-            <button type="button" className="player__play" onClick={() => setIsPlaying(false)}>
-            <svg viewBox="0 0 14 21" width="14" height="21">
-              <use xlinkHref="#pause"></use>
-            </svg>
-            <span>Pause</span>
-          </button>
+              <button type="button" className="player__play" onClick={() => setIsPlaying(true)}>
+                <svg viewBox="0 0 19 19" width="19" height="19">
+                  <use xlinkHref="#play-s"></use>
+                </svg>
+                <span>Play</span>
+              </button>
+              :
+              <button type="button" className="player__play" onClick={() => setIsPlaying(false)}>
+                <svg viewBox="0 0 14 21" width="14" height="21">
+                  <use xlinkHref="#pause"></use>
+                </svg>
+                <span>Pause</span>
+              </button>
           }
           <div className="player__name">Transpotting</div>
 

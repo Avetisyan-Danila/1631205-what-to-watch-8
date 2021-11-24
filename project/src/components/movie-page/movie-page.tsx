@@ -1,20 +1,20 @@
 import {Fragment, useState, useEffect} from 'react';
 import {useParams, useHistory} from 'react-router';
 import {Link} from 'react-router-dom';
-import Tabs from '../tabs/tabs'
-import LoadingScreen from '../loading-screen/loading-screen'
-import NotFoundScreen from '../not-found-screen/not-found-screen'
-import MoreLikeThis from '../more-like-this/more-like-this'
+import Tabs from '../tabs/tabs';
+import LoadingScreen from '../loading-screen/loading-screen';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
+import MoreLikeThis from '../more-like-this/more-like-this';
 import {useSelector} from 'react-redux';
 import {getFilms} from '../../store/films-data/selectors';
 import {getAuthorizationStatus} from '../../store/user-process/selectors';
 import {AppRoute, APIRoute, AuthorizationStatus} from '../../const';
 import {Film} from '../../types/film';
 import {Comment} from '../../types/comment';
-import {api} from '../../index'
+import {api} from '../../index';
 import {adapter} from '../../film';
 import browserHistory from '../../browser-history';
-import Header from '../header/header'
+import Header from '../header/header';
 
 type RouteParams = {
   id: string;
@@ -29,27 +29,53 @@ function MoviePage(): JSX.Element {
   const [currentFilm, setcurrentFilm] = useState<Film | null>(null);
   const [filmComments, setFilmComments] = useState<Comment[] | null>(null);
 
+  const renderEmptyData = () => (
+    Number(id) > films.length ?
+      <NotFoundScreen />
+      :
+      <LoadingScreen />
+  );
+
   useEffect(() => {
     api.get<Film>(`${APIRoute.Films}/${id}`)
-    .then(({data}) => {
-      setcurrentFilm(adapter(data));
-    })
+      .then(({data}) => {
+        setcurrentFilm(adapter(data));
+      });
   }, [id]);
 
   useEffect(() => {
     api.get(`${APIRoute.Comments}/${id}`)
-    .then(({data}) => {
-      setFilmComments(data);
-      console.log(data);
-    })
+      .then(({data}) => {
+        setFilmComments(data);
+      });
   }, [id]);
 
   const handleTest = () => {
     if (currentFilm) {
       api.post(`${APIRoute.FavoriteFilm}/${currentFilm.id}/${Number(!currentFilm.isFavorite)}`)
-      .then(({data}) => {
-        setcurrentFilm(adapter(data));
-      })
+        .then(({data}) => {
+          setcurrentFilm(adapter(data));
+        });
+    }
+  };
+
+  const renderFavoriteIcon = () => {
+    if (currentFilm?.isFavorite === true) {
+      return (
+        <svg viewBox="0 0 18 14" width="18" height="14">
+          <use xlinkHref="#in-list"></use>
+        </svg>
+      );
+    }
+    return (
+      <svg viewBox='0 0 19 20' width='19' height='20'>
+        <use xlinkHref='#add'></use>
+      </svg>);
+  };
+
+  const renderAddReviewButton = () => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      return <a href='add-review.html' className='btn film-card__button' onClick={(e) => { e.preventDefault(); browserHistory.push(`${currentFilm?.id}/review`); }}>Add review</a>;
     }
   };
 
@@ -84,22 +110,12 @@ function MoviePage(): JSX.Element {
                 </Link>
                 <button className='btn btn--list film-card__button' type='button' onClick={handleTest}>
                   {
-                    currentFilm.isFavorite === true ?
-                      <svg viewBox="0 0 18 14" width="18" height="14">
-                        <use xlinkHref="#in-list"></use>
-                      </svg>
-                      :
-                      <svg viewBox='0 0 19 20' width='19' height='20'>
-                        <use xlinkHref='#add'></use>
-                      </svg>
+                    renderFavoriteIcon()
                   }
                   <span>My list</span>
                 </button>
                 {
-                  authorizationStatus === AuthorizationStatus.Auth ?
-                  <a href='add-review.html' className='btn film-card__button' onClick={(e) => {e.preventDefault(); browserHistory.push(`${currentFilm.id}/review`)}}>Add review</a>
-                  :
-                  ''
+                  renderAddReviewButton()
                 }
               </div>
             </div>
@@ -114,13 +130,7 @@ function MoviePage(): JSX.Element {
       <MoreLikeThis film={currentFilm} />
     </Fragment>
   )
-  :
-  (
-    Number(id) > films.length ?
-    <NotFoundScreen />
     :
-    <LoadingScreen />
-    
-  )
+    renderEmptyData();
 }
 export default MoviePage;
