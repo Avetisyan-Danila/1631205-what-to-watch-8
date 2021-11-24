@@ -26,11 +26,11 @@ function PostCommentForm(props: PostCommentFormProps): JSX.Element {
   function handleInputChange({target}: ChangeEvent<HTMLInputElement>) {
     setUserScore(Number(target.value));
     target.checked = true;
-  };
+  }
 
   function handleTextAreaChange({target}: ChangeEvent<HTMLTextAreaElement>) {
     setUserReview(target.value);
-  };
+  }
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -39,14 +39,14 @@ function PostCommentForm(props: PostCommentFormProps): JSX.Element {
       setIsTextareaDisabled(true);
       setIsSubmitButtonDisabled(true);
       api.post(`${APIRoute.Comments}/${film.id}`, {rating: userScore, comment: userReview})
-      .then(() => {
-        history.push(`/films/${props.film?.id}`);
-      })
-      .catch(() => {
-        toast.error(POST_COMMENT_FAIL_MESSAGE);
-        setIsTextareaDisabled(false);
-        setIsSubmitButtonDisabled(false);
-      })
+        .then(() => {
+          history.push(`/films/${props.film?.id}`);
+        })
+        .catch(() => {
+          toast.error(POST_COMMENT_FAIL_MESSAGE);
+          setIsTextareaDisabled(false);
+          setIsSubmitButtonDisabled(false);
+        });
     }
     else {
       if (userReview.length < 50) {

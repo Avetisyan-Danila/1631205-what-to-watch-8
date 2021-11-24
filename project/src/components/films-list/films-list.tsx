@@ -14,9 +14,7 @@ function FilmsList(props: FilmsListProps): JSX.Element {
   return (
     <Fragment>
       {
-        suitableFilms.slice(0, renderedFilmsCount).map((film) => {
-          return <FilmCard film={film} key={film.id} />;
-        })
+        suitableFilms.slice(0, renderedFilmsCount).map((film) => <FilmCard film={film} key={film.id} />)
       }
     </Fragment>
   );

@@ -11,20 +11,20 @@ function TabsOverview(props: TabsProps): JSX.Element {
   function filmRatingDescription(rating: number) {
     if (rating >= 0 && rating < 2) {
       return 'Bad';
-    } 
+    }
     else if (rating >= 2 && rating < 4) {
       return 'Normal';
     }
     else if (rating >= 4 && rating < 6) {
-      return 'Good'
+      return 'Good';
     }
     else if (rating >= 6 && rating < 8) {
-      return 'Very good'
+      return 'Very good';
     }
     else if (rating >= 8) {
-      return 'Awesome'
+      return 'Awesome';
     }
-  };
+  }
 
   return (
     <Fragment>

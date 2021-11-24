@@ -26,9 +26,9 @@ function GenreList(props: GenreListProps): JSX.Element {
 
   films.map((film) => {
     AllGenres.push(film.genre);
-  })
+  });
 
-  let uniqueGenres = Array.from(new Set(AllGenres));
+  const uniqueGenres = Array.from(new Set(AllGenres));
 
   if (storeGenre === 'All genres') {
     dispatch(gettingListFilms(films));
@@ -40,28 +40,34 @@ function GenreList(props: GenreListProps): JSX.Element {
         uniqueGenres.map((genre, index) => {
           const keyValue = `genre-${index}`;
 
-          return <li onClick={onGenreChange} key={keyValue} className={`catalog__genres-item ${activeGenre === index ? 'catalog__genres-item--active' : ''}`}><a href='#' className='catalog__genres-link' onClick={
-            (e) => {
-              e.preventDefault();
+          return (
+            <li onClick={onGenreChange} key={keyValue} className={`catalog__genres-item ${activeGenre === index ? 'catalog__genres-item--active' : ''}`}>
+              <a href='#' className='catalog__genres-link' onClick={
+                (e) => {
+                  e.preventDefault();
 
-              clickEventHandler(index);
-              
-              if (genre === 'All genres') {
-                dispatch(changeGenre('All genres'));
-                dispatch(gettingListFilms(films));
-                return;
-              }
+                  clickEventHandler(index);
 
-              films.forEach((film) => {
-                if (film.genre === genre) {
-                  suitableFilms.push(film);
+                  if (genre === 'All genres') {
+                    dispatch(changeGenre('All genres'));
+                    dispatch(gettingListFilms(films));
+                    return;
+                  }
+
+                  films.forEach((film) => {
+                    if (film.genre === genre) {
+                      suitableFilms.push(film);
+                    }
+                  });
+
+                  dispatch(changeGenre(genre));
+                  dispatch(gettingListFilms(suitableFilms));
                 }
-              });
-
-              dispatch(changeGenre(genre));
-              dispatch(gettingListFilms(suitableFilms));
-            }
-          }>{genre}</a></li>
+              }
+              >{genre}
+              </a>
+            </li>
+          );
         })
       }
     </ul>

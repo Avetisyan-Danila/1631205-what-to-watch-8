@@ -31,7 +31,7 @@ function SignIn(): JSX.Element {
 
   return (
     <div className='user-page'>
-      <Header class={'user-page__head'} isSingInPage={true} />
+      <Header class={'user-page__head'} isSingInPage />
 
       <div className='sign-in user-page__content'>
         <form action='#' className='sign-in__form' onSubmit={handleSubmit}>

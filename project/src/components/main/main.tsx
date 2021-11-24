@@ -12,9 +12,9 @@ import {api} from '../../index';
 import {AppRoute} from '../../const';
 import {adapter} from '../../film';
 import {Film} from '../../types/film';
-import LoadingScreen from '../loading-screen/loading-screen'
-import Header from '../header/header'
-import Footer from '../footer/footer'
+import LoadingScreen from '../loading-screen/loading-screen';
+import Header from '../header/header';
+import Footer from '../footer/footer';
 import {useHistory} from 'react-router';
 import {Link} from 'react-router-dom';
 
@@ -30,11 +30,11 @@ function Main(): JSX.Element {
   const handleTest = () => {
     if (currentFilm) {
       api.post(`${APIRoute.FavoriteFilm}/${currentFilm.id}/${Number(!currentFilm.isFavorite)}`)
-      .then(({data}) => {
-        setcurrentFilm(adapter(data));
-      })
+        .then(({data}) => {
+          setcurrentFilm(adapter(data));
+        });
     }
-  }
+  };
 
   useEffect(() => {
     dispatch(fetchFilmAction());
@@ -42,14 +42,14 @@ function Main(): JSX.Element {
 
   useEffect(() => {
     if (films.length) {
-      api.get(`promo`)
-      .then(({data}) => {
-        setcurrentFilm(adapter(data));
-      })
+      api.get('promo')
+        .then(({data}) => {
+          setcurrentFilm(adapter(data));
+        });
     }
   }, [films]);
 
-  return !!currentFilm ? (
+  return currentFilm ? (
     <React.Fragment>
       <section className='film-card'>
         <div className='film-card__bg'>
@@ -112,13 +112,17 @@ function Main(): JSX.Element {
           </div>
 
           {
-            renderedFilmsCount > suitableFilms.length ?
-              ''
-              :
-              suitableFilms.length > FILMS_COUNT_PER_STEP ?
-                <ShowMore onShowMoreButtonClick={() => setRenderedFilmsCount((prevCount) => prevCount + FILMS_COUNT_PER_STEP)} />
-                :
-                ''
+            (() => {
+              if (renderedFilmsCount > suitableFilms.length) {
+                return '';
+              } else {
+                if (suitableFilms.length > FILMS_COUNT_PER_STEP) {
+                  return <ShowMore onShowMoreButtonClick={() => setRenderedFilmsCount((prevCount) => prevCount + FILMS_COUNT_PER_STEP)} />;
+                } else {
+                  return '';
+                }
+              }
+            })
           }
         </section>
 
@@ -126,10 +130,10 @@ function Main(): JSX.Element {
       </div>
     </React.Fragment>
   )
-  :
-  (
-    <LoadingScreen />
-  )
+    :
+    (
+      <LoadingScreen />
+    );
 }
 
 export default Main;

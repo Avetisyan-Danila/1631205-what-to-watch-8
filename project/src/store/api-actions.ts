@@ -26,13 +26,13 @@ export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     try {
       await api.get(APIRoute.Login)
-      .then(({data}) => {
-        if (!data) {
-          dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-        } else {
-          dispatch(requireAuthorization(AuthorizationStatus.Auth));
-        }
-      });
+        .then(({data}) => {
+          if (!data) {
+            dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+          } else {
+            dispatch(requireAuthorization(AuthorizationStatus.Auth));
+          }
+        });
     } catch {
       toast.info(SERVER_FAIL_MESSAGE);
     }
@@ -48,7 +48,7 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
     } catch {
       toast.info(SERVER_FAIL_MESSAGE);
     }
-  }
+  };
 
 export const addCommentAction = ({id, rating, comment}: CommentData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
@@ -82,11 +82,11 @@ export const fetchFavoriteFilmAction = (): ThunkActionResult =>
     try {
       const {data} = await api.get<Film[]>(APIRoute.FavoriteFilm);
       const dataUIFormat: Film[] = [];
-  
+
       data.map((film) => {
         dataUIFormat.push(adapter(film));
       });
-  
+
       dispatch(loadFavoriteFilms(dataUIFormat));
     } catch {
       toast.info(SERVER_FAIL_MESSAGE);
@@ -99,7 +99,7 @@ export const fetchCertainFilmAction = (id: string): ThunkActionResult =>
       const {data} = await api.get<Film>(`${APIRoute.Films}/${id}`);
       const dataUIFormat: Film[] = [];
       dataUIFormat.push(adapter(data));
-  
+
       dispatch(loadCertainFilm(dataUIFormat));
     } catch {
       toast.info(SERVER_FAIL_MESSAGE);

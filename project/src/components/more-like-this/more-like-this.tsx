@@ -21,18 +21,18 @@ function MoreLikeThis(props: MoreLikeThisProps): JSX.Element {
 
   useEffect(() => {
     api.get(`${APIRoute.Films}/${film.id}/similar`)
-    .then(({data}) => {
-      const dataUIFormat: Film[] = [];
+      .then(({data}) => {
+        const dataUIFormat: Film[] = [];
 
-      data.map((film: Film) => {
-        dataUIFormat.push(adapter(film));
+        data.map((fimilarFilm: Film) => {
+          dataUIFormat.push(adapter(fimilarFilm));
+        });
+
+        setSimilarFilms(dataUIFormat);
       });
-
-      setSimilarFilms(dataUIFormat);
-    })
   }, []);
 
-  return !!similarFilms ? (
+  return similarFilms ? (
     <div className="page-content">
       <section className="catalog catalog--like-this">
         <h2 className="catalog__title">More like this</h2>
@@ -44,7 +44,7 @@ function MoreLikeThis(props: MoreLikeThisProps): JSX.Element {
 
               if (similarFilm.genre === film.genre && similarFilm.id !== film.id) {
                 return (
-                  <article className='small-film-card catalog__films-card'>
+                  <article key={keyValue} className='small-film-card catalog__films-card'>
                     <Link onClick={() => dispatch(fetchCertainFilmAction(similarFilm.id))} className='small-film-card__link' to={`films/${similarFilm.id}`}>
                       <VideoPlayer src={similarFilm.previewVideoLink} posterSrc={similarFilm.posterImage} />
                     </Link>
@@ -52,7 +52,7 @@ function MoreLikeThis(props: MoreLikeThisProps): JSX.Element {
                       <Link onClick={() => dispatch(fetchCertainFilmAction(similarFilm.id))} className='small-film-card__link' to={`films/${similarFilm.id}`}>{similarFilm.title}</Link>
                     </h3>
                   </article>
-                )
+                );
               }
             })
           }
@@ -62,10 +62,10 @@ function MoreLikeThis(props: MoreLikeThisProps): JSX.Element {
       <Footer />
     </div>
   )
-  :
-  (
-    <LoadingScreen />
-  )
+    :
+    (
+      <LoadingScreen />
+    );
 }
 
 export default MoreLikeThis;

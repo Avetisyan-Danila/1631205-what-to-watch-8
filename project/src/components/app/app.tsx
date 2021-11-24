@@ -17,9 +17,9 @@ import {getLoadedDataStatus} from '../../store/films-data/selectors';
 import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
 function App(): JSX.Element {
-  const authorizationStatus = useSelector(getAuthorizationStatus)
-  const isDataLoaded = useSelector(getLoadedDataStatus)
-  const films = useSelector(getFilms)
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+  const isDataLoaded = useSelector(getLoadedDataStatus);
+  const films = useSelector(getFilms);
 
   if (isCheckedAuth(authorizationStatus) || !isDataLoaded) {
     return (
@@ -40,12 +40,14 @@ function App(): JSX.Element {
           exact
           path={AppRoute.MyList}
           render={() => <MyList />}
-        ></PrivateRoute>
+        >
+        </PrivateRoute>
         <PrivateRoute
           exact
           path={AppRoute.AddReview}
           render={() => <AddReview />}
-        ></PrivateRoute>
+        >
+        </PrivateRoute>
         <Route exact path={AppRoute.Film}>
           <MoviePage />
         </Route>

@@ -8,11 +8,11 @@ function TabsDetails(props: TabsProps): JSX.Element {
   const {film} = props;
 
   function getTimeFromMins(mins: number) {
-    let hours = Math.trunc(mins / 60);
-    let minutes = mins % 60;
+    const hours = Math.trunc(mins / 60);
+    const minutes = mins % 60;
     return `${hours}h ${minutes}m`;
-  };
-  
+  }
+
   return (
     <div className="film-card__text film-card__row">
       <div className="film-card__text-col">

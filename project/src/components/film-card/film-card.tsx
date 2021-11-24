@@ -17,7 +17,7 @@ function FilmCard(props: FilmCardProps): JSX.Element {
   return (
     <article className='small-film-card catalog__films-card'>
       <Link onClick={() => dispatch(fetchCertainFilmAction(id))} className='small-film-card__link' to={`films/${id}`}>
-        <VideoPlayer src={previewVideoLink} posterSrc={posterImage} /> 
+        <VideoPlayer src={previewVideoLink} posterSrc={posterImage} />
       </Link>
       <h3 className='small-film-card__title'>
         <Link onClick={() => dispatch(fetchCertainFilmAction(id))} className='small-film-card__link' to={`films/${id}`}>{title}</Link>

@@ -5,8 +5,8 @@ import {Film} from './types/film';
 export const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
 
-export const adapter = (data: AnyObject): Film => {
-  return {
+export const adapter = (data: AnyObject): Film => (
+  {
     id: data.id,
     posterImage: data.poster_image,
     previewImage: data.preview_image,
@@ -24,5 +24,5 @@ export const adapter = (data: AnyObject): Film => {
     director: data.director,
     starring: data.starring,
     isFavorite: data.is_favorite,
-  };
-};
+  }
+);
