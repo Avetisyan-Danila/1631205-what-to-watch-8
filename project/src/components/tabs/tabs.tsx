@@ -3,6 +3,7 @@ import TabsOverview from '../tabs-overview/tabs-overview';
 import TabsDetails from '../tabs-details/tabs-details';
 import TabsReviews from '../tabs-reviews/tabs-reviews';
 import {Film} from '../../types/film';
+import {Comment} from '../../types/comment';
 
 const tabs = [
   'Overview',
@@ -12,6 +13,7 @@ const tabs = [
 
 type TabsProps = {
   film: Film;
+  comments: Comment[];
 };
 
 function Tabs(props: TabsProps): JSX.Element {
@@ -22,7 +24,7 @@ function Tabs(props: TabsProps): JSX.Element {
     setActiveTabIndex(id);
   }
 
-  const {film} = props;
+  const {film, comments} = props;
 
   return (
     <div className='film-card__info'>
@@ -63,7 +65,7 @@ function Tabs(props: TabsProps): JSX.Element {
         }
         {
           activeTab === 'Reviews' ?
-          (<TabsReviews />)
+          (<TabsReviews comments={comments} />)
           :
           ''
         }

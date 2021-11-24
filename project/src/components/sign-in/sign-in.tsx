@@ -1,9 +1,19 @@
 import {useRef, FormEvent} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {loginAction} from '../../store/api-actions';
+import Header from '../header/header';
+import Footer from '../footer/footer';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import {AppRoute, AuthorizationStatus} from '../../const';
+import {redirectToRoute} from '../../store/action';
 
 function SignIn(): JSX.Element {
   const dispatch = useDispatch();
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    dispatch(redirectToRoute(AppRoute.Root));
+  }
 
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
@@ -21,17 +31,7 @@ function SignIn(): JSX.Element {
 
   return (
     <div className='user-page'>
-      <header className='page-header user-page__head'>
-        <div className='logo'>
-          <a href='main.html' className='logo__link'>
-            <span className='logo__letter logo__letter--1'>W</span>
-            <span className='logo__letter logo__letter--2'>T</span>
-            <span className='logo__letter logo__letter--3'>W</span>
-          </a>
-        </div>
-
-        <h1 className='page-title user-page__title'>Sign in</h1>
-      </header>
+      <Header class={'user-page__head'} isSingInPage={true} />
 
       <div className='sign-in user-page__content'>
         <form action='#' className='sign-in__form' onSubmit={handleSubmit}>
@@ -51,19 +51,7 @@ function SignIn(): JSX.Element {
         </form>
       </div>
 
-      <footer className='page-footer'>
-        <div className='logo'>
-          <a href='main.html' className='logo__link logo__link--light'>
-            <span className='logo__letter logo__letter--1'>W</span>
-            <span className='logo__letter logo__letter--2'>T</span>
-            <span className='logo__letter logo__letter--3'>W</span>
-          </a>
-        </div>
-
-        <div className='copyright'>
-          <p>© 2019 What to watch Ltd.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

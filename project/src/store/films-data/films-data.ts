@@ -1,10 +1,11 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {FilmsData} from '../../types/state';
-import {loadFilms, loadFavoriteFilms} from '../action';
+import {loadFilms, loadFavoriteFilms, loadCertainFilm} from '../action';
 
 const initialState: FilmsData = {
   films: [],
   favoriteFilms: [],
+  certainFilm: [],
   isDataLoaded: false,
 };
 
@@ -18,6 +19,10 @@ const filmsData = createReducer(initialState, (builder) => {
     .addCase(loadFavoriteFilms, (state, action) => {
       const {films} = action.payload;
       state.favoriteFilms = films;
+    })
+    .addCase(loadCertainFilm, (state, action) => {
+      const {film} = action.payload;
+      state.certainFilm = film;
     });
 });
 

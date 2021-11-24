@@ -4,4 +4,5 @@ import {Film} from '../../types/film';
 
 export const getFilms = (state: State): Film[] => state[NameSpace.data].films;
 export const getFavoriteFilms = (state: State): Film[] => state[NameSpace.data].favoriteFilms;
+export const getCertainFilm = (state: State): Film[] => state[NameSpace.data].certainFilm;
 export const getLoadedDataStatus = (state: State): boolean => state[NameSpace.data].isDataLoaded;

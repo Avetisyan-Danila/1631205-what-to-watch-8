@@ -40,13 +40,14 @@ function App(): JSX.Element {
           exact
           path={AppRoute.MyList}
           render={() => <MyList />}
-        >
-        </PrivateRoute>
+        ></PrivateRoute>
+        <PrivateRoute
+          exact
+          path={AppRoute.AddReview}
+          render={() => <AddReview />}
+        ></PrivateRoute>
         <Route exact path={AppRoute.Film}>
           <MoviePage />
-        </Route>
-        <Route exact path={AppRoute.AddReview}>
-          <AddReview films={films} />
         </Route>
         <Route exact path={AppRoute.Player}>
           <Player films={films} />

@@ -6,7 +6,8 @@ import {ActionType} from '../../types/action';
 export const redirect: Middleware<unknown, State> =
   (_store) => (next) => (action) => {
     if (action.type === ActionType.RedirectToRoute) {
-      browserHistory.push(action.payload);
+      const {url} = action.payload
+      browserHistory.push(url);
     }
 
     return next(action);
