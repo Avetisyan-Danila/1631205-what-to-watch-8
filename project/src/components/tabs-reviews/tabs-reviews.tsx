@@ -25,7 +25,7 @@ function TabsReviews(props: TabsProps): JSX.Element {
 
                   <footer className="review__details">
                     <cite className="review__author">{comment.user.name}</cite>
-                    <time className="review__date" dateTime={`${comment.date.slice(0, 10)}`}>{`${dateMonth} ${dateDay}, ${dateYear}`}</time>
+                    <time className="review__date" dateTime={`${comment.date}`}>{`${dateMonth} ${dateDay}, ${dateYear}`}</time>
                   </footer>
                 </blockquote>
 

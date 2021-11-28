@@ -45,11 +45,11 @@ function MoreLikeThis(props: MoreLikeThisProps): JSX.Element {
               if (similarFilm.genre === film.genre && similarFilm.id !== film.id) {
                 return (
                   <article key={keyValue} className='small-film-card catalog__films-card'>
-                    <Link onClick={() => dispatch(fetchCertainFilmAction(similarFilm.id))} className='small-film-card__link' to={`films/${similarFilm.id}`}>
+                    <Link onClick={() => dispatch(fetchCertainFilmAction(similarFilm.id))} className='small-film-card__link' to={`${similarFilm.id}`}>
                       <VideoPlayer src={similarFilm.previewVideoLink} posterSrc={similarFilm.posterImage} />
                     </Link>
                     <h3 className='small-film-card__title'>
-                      <Link onClick={() => dispatch(fetchCertainFilmAction(similarFilm.id))} className='small-film-card__link' to={`films/${similarFilm.id}`}>{similarFilm.title}</Link>
+                      <Link onClick={() => dispatch(fetchCertainFilmAction(similarFilm.id))} className='small-film-card__link' to={`${similarFilm.id}`}>{similarFilm.title}</Link>
                     </h3>
                   </article>
                 );

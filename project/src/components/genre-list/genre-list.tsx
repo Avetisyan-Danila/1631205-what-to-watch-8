@@ -9,6 +9,8 @@ type GenreListProps = {
   onGenreChange: MouseEventHandler<HTMLElement>;
 };
 
+const defaultGenre = 'All genres';
+
 function GenreList(props: GenreListProps): JSX.Element {
   const {onGenreChange} = props;
   const films = useSelector(getFilms);
@@ -21,16 +23,16 @@ function GenreList(props: GenreListProps): JSX.Element {
     setActiveGenre(id);
   }
 
-  const AllGenres: string[] = ['All genres'];
+  const allGenres: string[] = [defaultGenre];
   const suitableFilms: Film[] = [];
 
   films.map((film) => {
-    AllGenres.push(film.genre);
+    allGenres.push(film.genre);
   });
 
-  const uniqueGenres = Array.from(new Set(AllGenres));
+  const uniqueGenres = Array.from(new Set(allGenres));
 
-  if (storeGenre === 'All genres') {
+  if (storeGenre === defaultGenre) {
     dispatch(gettingListFilms(films));
   }
 
@@ -48,8 +50,8 @@ function GenreList(props: GenreListProps): JSX.Element {
 
                   clickEventHandler(index);
 
-                  if (genre === 'All genres') {
-                    dispatch(changeGenre('All genres'));
+                  if (genre === defaultGenre) {
+                    dispatch(changeGenre(defaultGenre));
                     dispatch(gettingListFilms(films));
                     return;
                   }

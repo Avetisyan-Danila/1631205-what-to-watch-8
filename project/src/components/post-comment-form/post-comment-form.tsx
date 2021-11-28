@@ -5,10 +5,12 @@ import {api} from '../../index';
 import {toast} from 'react-toastify';
 import {useHistory} from 'react-router';
 
-const POST_COMMENT_FAIL_MESSAGE = 'Сервер не доступен';
-const FORM_MIN_LENGTH_FAIL_MESSAGE = 'Минимальная длина отзыва 50 символов';
-const FORM_MAX_LENGTH_FAIL_MESSAGE = 'Максимальная длина отзыва 400 символов';
-const FORM_EMPTY_SCORE_FAIL_MESSAGE = 'Не указана оценка фильма';
+enum UserInformation {
+  PostCommentFailMessage = 'Сервер не доступен',
+  FormMinLengthFailMessage = 'Минимальная длина отзыва 50 символов',
+  FormMaxLengthFailMessage = 'Максимальная длина отзыва 400 символов',
+  FormEmptyScoreFailMessage = 'Не указана оценка фильма',
+}
 
 type PostCommentFormProps = {
   film: Film;
@@ -43,20 +45,20 @@ function PostCommentForm(props: PostCommentFormProps): JSX.Element {
           history.push(`/films/${props.film?.id}`);
         })
         .catch(() => {
-          toast.error(POST_COMMENT_FAIL_MESSAGE);
+          toast.error(UserInformation.PostCommentFailMessage);
           setIsTextareaDisabled(false);
           setIsSubmitButtonDisabled(false);
         });
     }
     else {
       if (userReview.length < 50) {
-        toast.warn(FORM_MIN_LENGTH_FAIL_MESSAGE);
+        toast.warn(UserInformation.FormMinLengthFailMessage);
       }
       if (userReview.length > 400) {
-        toast.warn(FORM_MAX_LENGTH_FAIL_MESSAGE);
+        toast.warn(UserInformation.FormMaxLengthFailMessage);
       }
       if (userScore === 0) {
-        toast.warn(FORM_EMPTY_SCORE_FAIL_MESSAGE);
+        toast.warn(UserInformation.FormEmptyScoreFailMessage);
       }
     }
   };

@@ -4,7 +4,7 @@ import FilmsList from '../films-list/films-list';
 import GenreList from '../genre-list/genre-list';
 import ShowMore from '../show-more/show-more';
 import {useSelector, useDispatch} from 'react-redux';
-import {FILMS_COUNT_PER_STEP, APIRoute} from '../../const';
+import {FILMS_COUNT_PER_STEP, APIRoute, AuthorizationStatus} from '../../const';
 import {getFilms} from '../../store/films-data/selectors';
 import {getSuitableFilms} from '../../store/films-process/selectors';
 import {fetchFilmAction} from '../../store/api-actions';
@@ -17,22 +17,36 @@ import Header from '../header/header';
 import Footer from '../footer/footer';
 import {useHistory} from 'react-router';
 import {Link} from 'react-router-dom';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import {toast} from 'react-toastify';
+
+const SERVER_FAIL_MESSAGE = 'Сервер не доступен';
+const AUTH_FAIL_MESSAGE = 'Не забудьте авторизоваться';
 
 function Main(): JSX.Element {
   const [renderedFilmsCount, setRenderedFilmsCount] = useState(FILMS_COUNT_PER_STEP);
   const films = useSelector(getFilms);
   const suitableFilms = useSelector(getSuitableFilms);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
   const [currentFilm, setcurrentFilm] = useState<Film | null>(null);
   const dispatch = useDispatch();
   const history = useHistory();
+  /* eslint-disable */
+  console.log(history)
 
-  const handleTest = () => {
-    if (currentFilm) {
-      api.post(`${APIRoute.FavoriteFilm}/${currentFilm.id}/${Number(!currentFilm.isFavorite)}`)
-        .then(({data}) => {
-          setcurrentFilm(adapter(data));
-        });
+  const handleAddFavoriteFilm = () => {
+    try {
+      if (currentFilm && authorizationStatus === AuthorizationStatus.Auth) {
+        api.post(`${APIRoute.FavoriteFilm}/${currentFilm.id}/${Number(!currentFilm.isFavorite)}`)
+          .then(({ data }) => {
+            setcurrentFilm(adapter(data));
+          });
+      } else {
+        toast.info(AUTH_FAIL_MESSAGE);
+      }
+    } catch {
+      toast.info(SERVER_FAIL_MESSAGE);
     }
   };
 
@@ -82,7 +96,7 @@ function Main(): JSX.Element {
                     <span>Play</span>
                   </button>
                 </Link>
-                <button className='btn btn--list film-card__button' type='button' onClick={handleTest}>
+                <button className='btn btn--list film-card__button' type='button' onClick={handleAddFavoriteFilm}>
                   {
                     currentFilm.isFavorite === true ?
                       <svg viewBox="0 0 18 14" width="18" height="14">
