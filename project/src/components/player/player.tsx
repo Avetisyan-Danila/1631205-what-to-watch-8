@@ -16,6 +16,8 @@ function Player(props: PlayerProps): JSX.Element {
   const {films} = props;
   const {id} = useParams<RouteParams>();
   const history = useHistory();
+  /* eslint-disable */
+  console.log(history);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progressTime, setprogressTime] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -48,18 +50,18 @@ function Player(props: PlayerProps): JSX.Element {
     }
   }, [isPlaying]);
 
-  const handeOnEnded = () => {
+  const handerOnEnded = () => {
     if (video) {
       video.currentTime = 0;
       setIsPlaying(false);
     }
   };
 
-  const handeOnTimeUpdate = () => { setprogressTime(video === null ? 0 : (Math.round(video.currentTime) * 100) / Math.round(video.duration)); setTimeLeft(video === null ? 0 : Math.round(video.duration) - (Math.round(video.currentTime)));};
+  const handerOnTimeUpdate = () => { setprogressTime(video === null ? 0 : (Math.round(video.currentTime) * 100) / Math.round(video.duration)); setTimeLeft(video === null ? 0 : Math.round(video.duration) - (Math.round(video.currentTime)));};
 
   return (
     <div className="player">
-      <video className="player__video" poster={film.backgroundImage} ref={videoRef} onEnded={handeOnEnded} onTimeUpdate={handeOnTimeUpdate}><source src={film.videoLink} type="video/mp4" /></video>
+      <video className="player__video" poster={film.backgroundImage} ref={videoRef} onEnded={handerOnEnded} onTimeUpdate={handerOnTimeUpdate}><source src={film.videoLink} type="video/mp4" /></video>
 
       <Link onClick={() => history.push(AppRoute.Film)} to={id}><button type="button" className="player__exit">Exit</button></Link>
 

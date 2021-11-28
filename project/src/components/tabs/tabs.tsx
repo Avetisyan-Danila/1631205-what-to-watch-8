@@ -11,6 +11,12 @@ const tabs = [
   'Reviews',
 ];
 
+enum TabsName {
+  Overview = 'Overview',
+  Details = 'Details',
+  Reviews = 'Reviews',
+}
+
 type TabsProps = {
   film: Film;
   comments: Comment[];
@@ -57,19 +63,19 @@ function Tabs(props: TabsProps): JSX.Element {
           </ul>
         </nav>
         {
-          activeTab === 'Overview' ?
+          activeTab === TabsName.Overview ?
             <TabsOverview film={film} />
             :
             ''
         }
         {
-          activeTab === 'Details' ?
+          activeTab === TabsName.Details ?
             (<TabsDetails film={film} />)
             :
             ''
         }
         {
-          activeTab === 'Reviews' ?
+          activeTab === TabsName.Reviews ?
             (<TabsReviews comments={comments} />)
             :
             ''
