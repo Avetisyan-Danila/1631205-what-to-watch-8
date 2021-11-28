@@ -22,13 +22,13 @@ function MoreLikeThis(props: MoreLikeThisProps): JSX.Element {
   useEffect(() => {
     api.get(`${APIRoute.Films}/${film.id}/similar`)
       .then(({data}) => {
-        const dataUIFormat: Film[] = [];
+        const adaptedFilms: Film[] = [];
 
         data.map((fimilarFilm: Film) => {
-          dataUIFormat.push(adapter(fimilarFilm));
+          adaptedFilms.push(adapter(fimilarFilm));
         });
 
-        setSimilarFilms(dataUIFormat);
+        setSimilarFilms(adaptedFilms);
       });
   }, []);
 

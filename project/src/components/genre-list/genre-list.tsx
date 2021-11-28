@@ -1,4 +1,4 @@
-import {useState, memo, MouseEventHandler} from 'react';
+import {useState, useEffect, memo, MouseEventHandler} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {changeGenre, gettingListFilms} from '../../store/action';
 import {Film} from '../../types/film';
@@ -26,15 +26,17 @@ function GenreList(props: GenreListProps): JSX.Element {
   const allGenres: string[] = [defaultGenre];
   const suitableFilms: Film[] = [];
 
+  useEffect(() => {
+    if (storeGenre === defaultGenre) {
+      dispatch(gettingListFilms(films));
+    }
+  }, []);
+
   films.map((film) => {
     allGenres.push(film.genre);
   });
 
   const uniqueGenres = Array.from(new Set(allGenres));
-
-  if (storeGenre === defaultGenre) {
-    dispatch(gettingListFilms(films));
-  }
 
   return (
     <ul className='catalog__genres-list'>

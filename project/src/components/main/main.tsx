@@ -9,19 +9,15 @@ import {getFilms} from '../../store/films-data/selectors';
 import {getSuitableFilms} from '../../store/films-process/selectors';
 import {fetchFilmAction} from '../../store/api-actions';
 import {api} from '../../index';
-import {AppRoute} from '../../const';
+import {AppRoute, UserInformation} from '../../const';
 import {adapter} from '../../film';
 import {Film} from '../../types/film';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import {useHistory} from 'react-router';
-import {Link} from 'react-router-dom';
 import {getAuthorizationStatus} from '../../store/user-process/selectors';
 import {toast} from 'react-toastify';
-
-const SERVER_FAIL_MESSAGE = 'Сервер не доступен';
-const AUTH_FAIL_MESSAGE = 'Не забудьте авторизоваться';
 
 function Main(): JSX.Element {
   const [renderedFilmsCount, setRenderedFilmsCount] = useState(FILMS_COUNT_PER_STEP);
@@ -32,8 +28,6 @@ function Main(): JSX.Element {
   const [currentFilm, setcurrentFilm] = useState<Film | null>(null);
   const dispatch = useDispatch();
   const history = useHistory();
-  /* eslint-disable */
-  console.log(history)
 
   const handleAddFavoriteFilm = () => {
     try {
@@ -43,10 +37,22 @@ function Main(): JSX.Element {
             setcurrentFilm(adapter(data));
           });
       } else {
-        toast.info(AUTH_FAIL_MESSAGE);
+        toast.info(UserInformation.AuthFailMessage);
       }
     } catch {
-      toast.info(SERVER_FAIL_MESSAGE);
+      toast.error(UserInformation.ServerFailMessage);
+    }
+  };
+
+  const handleShowMoreButton = () => {
+    if (renderedFilmsCount > suitableFilms.length) {
+      return '';
+    } else {
+      if (suitableFilms.length > FILMS_COUNT_PER_STEP) {
+        return <ShowMore onShowMoreButtonClick={() => setRenderedFilmsCount((prevCount) => prevCount + FILMS_COUNT_PER_STEP)} />;
+      } else {
+        return '';
+      }
     }
   };
 
@@ -88,14 +94,14 @@ function Main(): JSX.Element {
               </p>
 
               <div className='film-card__buttons'>
-                <Link className='film-card__button' style={{textDecoration: 'none'}} onClick={() => history.push(AppRoute.Player)} to={`${currentFilm.id}`}>
+                <a className='film-card__button' style={{textDecoration: 'none'}} onClick={() => history.push(AppRoute.Player.replace(':id', currentFilm.id))}>
                   <button className='btn btn--play' type='button'>
                     <svg viewBox='0 0 19 19' width='19' height='19'>
                       <use xlinkHref='#play-s'></use>
                     </svg>
                     <span>Play</span>
                   </button>
-                </Link>
+                </a>
                 <button className='btn btn--list film-card__button' type='button' onClick={handleAddFavoriteFilm}>
                   {
                     currentFilm.isFavorite === true ?
@@ -126,17 +132,7 @@ function Main(): JSX.Element {
           </div>
 
           {
-            (() => {
-              if (renderedFilmsCount > suitableFilms.length) {
-                return '';
-              } else {
-                if (suitableFilms.length > FILMS_COUNT_PER_STEP) {
-                  return <ShowMore onShowMoreButtonClick={() => setRenderedFilmsCount((prevCount) => prevCount + FILMS_COUNT_PER_STEP)} />;
-                } else {
-                  return '';
-                }
-              }
-            })
+            handleShowMoreButton()
           }
         </section>
 

@@ -1,5 +1,5 @@
 import {Fragment, useEffect} from 'react';
-import {AuthorizationStatus, AppRoute} from '../../const';
+import {AuthorizationStatus, AppRoute, UserInformation} from '../../const';
 import {useSelector, useDispatch} from 'react-redux';
 import {getAuthorizationStatus} from '../../store/user-process/selectors';
 import {logoutAction} from '../../store/api-actions';
@@ -7,8 +7,6 @@ import {Link} from 'react-router-dom';
 import {useHistory, useRouteMatch} from 'react-router';
 import {Film} from '../../types/film';
 import {toast} from 'react-toastify';
-
-const AUTH_FAIL_MESSAGE = 'Не забудьте авторизоваться';
 
 type HeaderProps = {
   class: string;
@@ -24,7 +22,7 @@ function Header(props: HeaderProps): JSX.Element {
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.NoAuth && path !== '/login') {
-      toast.info(AUTH_FAIL_MESSAGE);
+      toast.info(UserInformation.AuthFailMessage);
     }
   }, [authorizationStatus]);
 
