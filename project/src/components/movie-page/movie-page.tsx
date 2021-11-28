@@ -1,6 +1,5 @@
 import {Fragment, useState, useEffect} from 'react';
 import {useParams, useHistory} from 'react-router';
-import {Link} from 'react-router-dom';
 import Tabs from '../tabs/tabs';
 import LoadingScreen from '../loading-screen/loading-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
@@ -13,7 +12,6 @@ import {Film} from '../../types/film';
 import {Comment} from '../../types/comment';
 import {api} from '../../index';
 import {adapter} from '../../film';
-import browserHistory from '../../browser-history';
 import Header from '../header/header';
 
 type RouteParams = {
@@ -50,7 +48,7 @@ function MoviePage(): JSX.Element {
       });
   }, [id]);
 
-  const handleTest = () => {
+  const handleToggleIsFavorite = () => {
     if (currentFilm) {
       api.post(`${APIRoute.FavoriteFilm}/${currentFilm.id}/${Number(!currentFilm.isFavorite)}`)
         .then(({data}) => {
@@ -75,7 +73,7 @@ function MoviePage(): JSX.Element {
 
   const renderAddReviewButton = () => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
-      return <a href='add-review.html' className='btn film-card__button' onClick={(e) => { e.preventDefault(); browserHistory.push(`${currentFilm?.id}/review`); }}>Add review</a>;
+      return <a href='add-review.html' className='btn film-card__button' onClick={(e) => {e.preventDefault(); history.push(`${currentFilm?.id}/review`);}}>Add review</a>;
     }
   };
 
@@ -100,15 +98,13 @@ function MoviePage(): JSX.Element {
               </p>
 
               <div className='film-card__buttons'>
-                <Link className='film-card__button' style={{textDecoration: 'none'}} onClick={() => history.push(AppRoute.Player)} to={id}>
-                  <button className='btn btn--play' type='button'>
-                    <svg viewBox='0 0 19 19' width='19' height='19'>
-                      <use xlinkHref='#play-s'></use>
-                    </svg>
-                    <span>Play</span>
-                  </button>
-                </Link>
-                <button className='btn btn--list film-card__button' type='button' onClick={handleTest}>
+                <button onClick={() => history.push(AppRoute.Player.replace(':id', id))} className='film-card__button btn btn--play' type='button'>
+                  <svg viewBox='0 0 19 19' width='19' height='19'>
+                    <use xlinkHref='#play-s'></use>
+                  </svg>
+                  <span>Play</span>
+                </button>
+                <button className='btn btn--list film-card__button' type='button' onClick={handleToggleIsFavorite}>
                   {
                     renderFavoriteIcon()
                   }

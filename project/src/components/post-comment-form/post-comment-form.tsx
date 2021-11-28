@@ -1,16 +1,9 @@
 import {useState, ChangeEvent, FormEvent, useEffect} from 'react';
 import {Film} from '../../types/film';
-import {APIRoute} from '../../const';
+import {APIRoute, UserInformation} from '../../const';
 import {api} from '../../index';
 import {toast} from 'react-toastify';
 import {useHistory} from 'react-router';
-
-enum UserInformation {
-  PostCommentFailMessage = 'Сервер не доступен',
-  FormMinLengthFailMessage = 'Минимальная длина отзыва 50 символов',
-  FormMaxLengthFailMessage = 'Максимальная длина отзыва 400 символов',
-  FormEmptyScoreFailMessage = 'Не указана оценка фильма',
-}
 
 type PostCommentFormProps = {
   film: Film;

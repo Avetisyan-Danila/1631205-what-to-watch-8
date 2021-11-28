@@ -4,18 +4,13 @@ import TabsDetails from '../tabs-details/tabs-details';
 import TabsReviews from '../tabs-reviews/tabs-reviews';
 import {Film} from '../../types/film';
 import {Comment} from '../../types/comment';
+import {TabsName} from '../../const';
 
 const tabs = [
   'Overview',
   'Details',
   'Reviews',
 ];
-
-enum TabsName {
-  Overview = 'Overview',
-  Details = 'Details',
-  Reviews = 'Reviews',
-}
 
 type TabsProps = {
   film: Film;

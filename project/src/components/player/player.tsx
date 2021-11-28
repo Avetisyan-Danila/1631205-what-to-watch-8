@@ -1,6 +1,5 @@
 import {useState, useEffect, useRef} from 'react';
 import {useParams, useHistory} from 'react-router';
-import {Link} from 'react-router-dom';
 import {Film} from '../../types/film';
 import {AppRoute} from '../../const';
 
@@ -16,8 +15,6 @@ function Player(props: PlayerProps): JSX.Element {
   const {films} = props;
   const {id} = useParams<RouteParams>();
   const history = useHistory();
-  /* eslint-disable */
-  console.log(history);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progressTime, setprogressTime] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -63,7 +60,7 @@ function Player(props: PlayerProps): JSX.Element {
     <div className="player">
       <video className="player__video" poster={film.backgroundImage} ref={videoRef} onEnded={handerOnEnded} onTimeUpdate={handerOnTimeUpdate}><source src={film.videoLink} type="video/mp4" /></video>
 
-      <Link onClick={() => history.push(AppRoute.Film)} to={id}><button type="button" className="player__exit">Exit</button></Link>
+      <button onClick={() => history.push(AppRoute.Film.replace(':id', id))} type="button" className="player__exit">Exit</button>
 
       <div className="player__controls">
         <div className="player__controls-row">
