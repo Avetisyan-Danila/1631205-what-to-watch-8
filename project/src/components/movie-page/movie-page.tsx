@@ -7,12 +7,13 @@ import MoreLikeThis from '../more-like-this/more-like-this';
 import {useSelector} from 'react-redux';
 import {getFilms} from '../../store/films-data/selectors';
 import {getAuthorizationStatus} from '../../store/user-process/selectors';
-import {AppRoute, APIRoute, AuthorizationStatus} from '../../const';
+import {AppRoute, APIRoute, AuthorizationStatus, UserInformation} from '../../const';
 import {Film} from '../../types/film';
 import {Comment} from '../../types/comment';
 import {api} from '../../index';
 import {adapter} from '../../film';
 import Header from '../header/header';
+import {toast} from 'react-toastify';
 
 type RouteParams = {
   id: string;
@@ -49,11 +50,17 @@ function MoviePage(): JSX.Element {
   }, [id]);
 
   const handleToggleIsFavorite = () => {
-    if (currentFilm) {
-      api.post(`${APIRoute.FavoriteFilm}/${currentFilm.id}/${Number(!currentFilm.isFavorite)}`)
-        .then(({data}) => {
-          setcurrentFilm(adapter(data));
-        });
+    try {
+      if (currentFilm && authorizationStatus === AuthorizationStatus.Auth) {
+        api.post(`${APIRoute.FavoriteFilm}/${currentFilm.id}/${Number(!currentFilm.isFavorite)}`)
+          .then(({ data }) => {
+            setcurrentFilm(adapter(data));
+          });
+      } else {
+        toast.info(UserInformation.AuthFailMessage);
+      }
+    } catch {
+      toast.error(UserInformation.ServerFailMessage);
     }
   };
 
